@@ -1,0 +1,31 @@
+server:
+  port: 8092
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  tracing:
+    enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          my-client:
+            provider: my-provider
+            authorization-grant-type: client_credentials
+            client-id: my-client-id
+            client-secret: my-client-secret
+        provider:
+          my-provider:
+            token-uri: http://localhost:8092/oauth2/token

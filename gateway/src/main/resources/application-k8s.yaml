@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  # All traces should be sent to latency analysis tool
+  tracing:
+    sampling:
+      probability: 1.0
+    enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  # For Exemplars to work we need histogram buckets
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+
+spring:
+  application:
+    name: gateway
+  security:
+    oauth2:
+      client:
+        registration:
+          my-client:
+            provider: my-provider
+            authorization-grant-type: client_credentials
+            client-id: my-client-id
+            client-secret: my-client-secret
+        provider:
+          my-provider:
+            token-uri: http://localhost:8082/oauth2/token
+
+springdoc:
+  #  enable-spring-security: true
+  #  show-login-endpoint: true
+  #  show-oauth2-endpoints: true
+  show-actuator: true
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+
+logging:
+  level:
+    root: INFO

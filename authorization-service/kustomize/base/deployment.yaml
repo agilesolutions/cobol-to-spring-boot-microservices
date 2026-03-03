@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorization-service
+  namespace: services
+  labels:
+    app: authorization-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorization-service
+  template:
+    metadata:
+      labels:
+        app: authorization-service
+    spec:
+      containers:
+        - name: authorization-service
+          image: agilesolutions/authorization-service:1.0.1
+          ports:
+            - containerPort: 8092

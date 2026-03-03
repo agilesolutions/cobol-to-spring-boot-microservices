@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-service
+  namespace: services
+  labels:
+    app: discovery-service
+spec:
+  selector:
+    app: discovery-service
+  ports:
+    - name: http
+      port: 8761
+      targetPort: 8761
+  type: ClusterIP  # internal-only, exposed via Ingress

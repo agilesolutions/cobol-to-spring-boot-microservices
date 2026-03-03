@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zos-connect-service
+  namespace: services
+  labels:
+    app: zos-connect-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zos-connect-service
+  template:
+    metadata:
+      labels:
+        app: zos-connect-service
+    spec:
+      containers:
+        - name: zos-connect-service
+          image: agilesolutions/zos-connect-service:1.0.1
+          ports:
+            - containerPort: 8082

@@ -1,0 +1,72 @@
+server:
+  port: 8080
+
+DEBUG: false
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  tracing:
+    enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+    export:
+      prometheus:
+        enabled: true
+
+spring:
+  application:
+    name: gateway
+  config:
+    import: "optional:configserver:http://localhost:8091/"
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8092
+#    oauth2:
+#      client:
+#        registration:
+#          gateway:
+#            provider: local-provider
+#            authorization-grant-type: client_credentials
+#            client-id: gateway-client-id
+#            client-secret: gateway-client-secret
+#        provider:
+#          local-provider:
+#            token-uri: http://authorization-service/oauth2/token
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+springdoc:
+  #  enable-spring-security: true
+  #  show-login-endpoint: true
+  #  show-oauth2-endpoints: true
+  show-actuator: true
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+
+logging:
+  level:
+    root: INFO

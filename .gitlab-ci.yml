@@ -1,0 +1,119 @@
+image: gradle:8.7-jdk21
+
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - docker
+  - deploy
+
+#include:
+#  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+variables:
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+  IMAGE_NAME: $CI_REGISTRY_IMAGE
+  DOCKER_DRIVER: overlay2
+  KUBE_CONFIG: "${KUBE_CONFIG}" # base64 encoded kubeconfig stored in GitLab CI variables
+  KUSTOMIZE_DIR: "kustomize/overlays/prod"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+before_script:
+  - export DOCKER_HOST="tcp://docker:2375" # Needed for Testcontainers in CI
+
+services:
+  - name: docker:dind
+    alias: docker
+
+build-job:       # This job runs in the build stage, which runs first.
+  #  image: gradle:8.7-jdk21
+  stage: build
+  script:
+    - echo "Compiling, build and package..."
+    - cd customer-service
+    - gradle bootJar
+    - cd ../account-service
+    - gradle bootJar
+    - cd ../gateway
+    - gradle bootJar
+    - echo "Build."
+  artifacts:
+    name: "application.jar"
+    paths:
+      - customer-service/build/libs/
+      - account-service/build/libs/
+      - gateway/build/libs/
+
+unit-tests:   # This job runs in the test stage.
+  stage: test
+  script:
+    - echo "Running unit tests... "
+    - cd $CI_PROJECT_DIR/customer-service
+    - gradle test
+    - cd $CI_PROJECT_DIR/account-service
+    - gradle test
+    - cd $CI_PROJECT_DIR/gateway
+    - gradle test
+
+#integration-tests:   # This job runs in the test stage.
+#  stage: test
+#  variables:
+#    DOCKER_HOST: tcp://docker:2375
+    # Use the overlay fs driver for improved performance:
+#    DOCKER_DRIVER: overlay2
+#    DOCKER_TLS_CERTDIR: ""
+#    TESTCONTAINERS_RYUK_DISABLED: "true" # Optional, speeds up CI
+#    TESTCONTAINERS_CHECKS_DISABLE: "true" # Optional, skips some startup checks
+#    GRADLE_USER_HOME: "$CI_PROJECT_DIR/account-service/.gradle"
+#  script:
+#    - echo "Running integration tests..."
+#    - cd $CI_PROJECT_DIR/account-service
+#    - gradle integrationTest
+
+docker-build:
+  stage: docker
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/customer-service:$CI_COMMIT_SHORT_SHA ./customer-service
+    - docker build -t $CI_REGISTRY_IMAGE/account-service:$CI_COMMIT_SHORT_SHA ./account-service
+    - docker build -t $CI_REGISTRY_IMAGE/gateway:$CI_COMMIT_SHORT_SHA ./gateway
+#    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
+#    - docker login registry.gitlab.com
+#    - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+#  only:
+#    - master
+
+deploy-kubectl:      # This job runs in the deploy stage.
+  #  environment: production
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  image: line/kubectl-kustomize:latest
+  before_script:
+    # Decode and configure kubeconfig
+    #  - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+    - kubectl version --client
+  script:
+    - echo "Now you can use kubectl commands you want"
+    - cd customer-service/${KUSTOMIZE_DIR} && kustomize edit set image customer-service=customer-service:$CI_COMMIT_SHORT_SHA && kustomize build .
+    - cd $CI_PROJECT_DIR/account-service/${KUSTOMIZE_DIR} && kustomize edit set image account-service=account-service:$CI_COMMIT_SHORT_SHA && kustomize build .
+    - cd $CI_PROJECT_DIR/gateway/${KUSTOMIZE_DIR} && kustomize edit set image gateway=gateway:$CI_COMMIT_SHORT_SHA && kustomize build .
+#    - kustomize build . | kubectl apply -f -
+#    - kubectl config get-contexts
+#    - kubectl config use-context $(kubectl config current-context)
+#  only:
+#    - master
+
+# Alternative HELM deployment
+deploy-helm:
+  image: dtzar/helm-kubectl:latest
+  stage: deploy
+  script:
+    - helm version
+    - echo "Now you can use helm commands you want"
+#    - echo "$KUBECONFIG_B64" | base64 -d > $KUBECONFIG
+#    - helm upgrade --install myapp ./chart --namespace=my-namespace --create-namespace

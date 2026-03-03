@@ -1,0 +1,47 @@
+debug: true
+
+server:
+  port: 8082
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  tracing:
+    enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+  metrics:
+    mongo:
+      command:
+        enabled: false
+    export:
+      prometheus:
+        enabled: true
+
+spring:
+  application:
+    name: account-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/oauth2/token
+
+springdoc:
+#  enable-spring-security: true
+#  show-login-endpoint: true
+#  show-oauth2-endpoints: true
+  show-actuator: true
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+logging:
+  level:
+    root: INFO
