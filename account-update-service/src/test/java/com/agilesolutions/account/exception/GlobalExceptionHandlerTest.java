@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -32,8 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("GlobalExceptionHandler - COBOL error paragraph tests")
 class GlobalExceptionHandlerTest {
 
-    @Autowired  private MockMvc      mockMvc;
-    @MockBean   private AccountService accountService;
+    @Autowired
+    private MockMvc      mockMvc;
+
+    @MockitoBean
+    private AccountService accountService;
 
     @Test
     @WithMockUser(roles = "USER")
