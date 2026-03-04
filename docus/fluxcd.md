@@ -13,7 +13,7 @@ Operating as a "pull-based" agent inside the cluster, it automates deployment by
 ## Setup FluxCD and Deploy the Application
 1. How to bootstrap FluxCD in your Kubernetes cluster:
 ```bash
-flux bootstrap github --owner=agilesolutions --repository=cobol-to-microservices --branch=master --path=fluxCD --personal
+flux bootstrap github --owner=agilesolutions --repository=cobol-to-spring-boot-microservices --branch=master --path=fluxCD --personal
 ```
 
 2. How this FluxCD configuration was initially generated for this sample application:
@@ -32,7 +32,7 @@ flux create kustomization metrics --target-namespace=monitoring --source=cobol-t
 ```
 4. Navigate to the project directory and build each individual service like here under and setup FluxCD
 ```bash
-cd cobol-to-microservices/gateway
+cd cobol-to-spring-boot-microservices/gateway
 ```
 3. Build and push the Docker images for the MicroServices to a container registry (e.g., Docker Hub, ECR):
 ```bash
