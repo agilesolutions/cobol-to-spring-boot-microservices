@@ -68,26 +68,4 @@ Clients (Web/Mobile)
 10. **Documentation and Training**: Ensure that comprehensive documentation is available for the new microservices and the overall architecture. Provide training for development and operations teams to ensure they are familiar with the new technologies and processes being used.
 11. **Feedback Loop**: Establish a feedback loop with stakeholders to gather insights and feedback on the new microservices. This will help you identify areas for improvement and ensure that the new architecture continues to meet business needs effectively.
 
-<img title="Strangler Fig Migration Roadmap" alt="Alt text" src="/docus/strangler-fig.png"> width="600"/>
-
-## Project structure
-```
-springboot-gateway-demo/
-│
-├── gateway/
-│   └── src/main/java/com/agilesolutions/gateway/
-│       ├── GatewayApplication.java
-│       └── config/GatewayConfig.java
-│
-├── account-service/
-│   └── src/main/java/com/agilesolutions/account/
-│       └── AccountServiceApplication.java
-│
-├── customer-service/
-│   └── src/main/java/com/agilesolutions/customer/
-│       └── CustomerServiceApplication.java
-│
-├── build.gradle
-└── settings.gradle
-
-```
+<img title="Strangler Fig Migration Roadmap" alt="Alt text" src="/docus/strangler-fig.png"/>
