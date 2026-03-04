@@ -2,6 +2,7 @@
 package com.agilesolutions.account.controller;
 
 import com.agilesolutions.account.domain.dto.*;
+import com.agilesolutions.account.rest.LegacyAccountClient;
 import com.agilesolutions.account.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,6 +42,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    private final LegacyAccountClient legacyAccountClient;
+
     // ─── COBOL: PROCESS-ENTER-KEY (CREATE) ──────────────────────────────────
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -64,8 +67,28 @@ public class AccountController {
                 .body(ApiResponseDto.success("Account created successfully", response));
     }
 
+    @GetMapping("/{accountId}", version = "1.0.0")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @Operation(
+            summary     = "Get account by ID",
+            description = "Call COBOL GET-ACCT-DATA / READ ACCTDAT paragraph through gateway service (version 1.0.0 for backward compatibility with legacy clients)"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Account found"),
+            @ApiResponse(responseCode = "404", description = "Account not found (COBOL NOT-FOUND path)"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    public ResponseEntity<ApiResponseDto<AccountResponseDto>> getAccount(
+            @Parameter(description = "11-digit account ID", example = "00001001001")
+            @PathVariable String accountId) {
+
+        log.debug("GET /accounts/{}", accountId);
+        ResponseEntity<ApiResponseDto<AccountResponseDto>> response = legacyAccountClient.getAccount(accountId);
+        return response;
+    }
+
     // ─── COBOL: GET-ACCT-DATA (READ) ────────────────────────────────────────
-    @GetMapping("/{accountId}")
+    @GetMapping("/{accountId}", version = "2.0.0")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(
             summary     = "Get account by ID",
