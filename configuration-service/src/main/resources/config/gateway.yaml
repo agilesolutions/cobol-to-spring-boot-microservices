@@ -65,6 +65,15 @@ spring:
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
 
+        - id: product-service-route
+          uri: lb://product-service
+          predicates:
+            - Path=/api/assets/**
+          filters:
+            # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
+            # Recommended: Remove the session cookie so downstream services only see the Bearer token
+            - RemoveRequestHeader=Cookie
+
         # =========================
         # Strangler Fig - Dual Run
         # =========================
