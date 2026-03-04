@@ -1,0 +1,69 @@
+server:
+  port: 8084
+
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  tracing:
+    enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+    export:
+      prometheus:
+        enabled: true
+spring:
+  application:
+    name: product-service
+  config:
+    import: "optional:configserver:http://localhost:8091/"
+  mvc:
+    apiversion:
+        use-header: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8092
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+springdoc:
+  #  enable-spring-security: true
+  #  show-login-endpoint: true
+  #  show-oauth2-endpoints: true
+  show-actuator: true
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+twelvedata:
+  api:
+    url: https://api.twelvedata.com/
+    key: demo
+
+service:
+  retry:
+    initial_delay: 1000
+    max-delay: 5000
+    multiplier: 2.0
+    max-attempts: 3
+
+logging:
+  level:
+    root: INFO
