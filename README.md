@@ -1,7 +1,12 @@
-# legacy z/OS COBOL to Spring Boot microservices on Kubernetes
-This project is demonstrating Strangler Fig pattern for modernizing a legacy monolith z/OS COBOL system into Spring Boot microservices on Kubernetes, using a Java REST API gateway as the integration layer.
+# Anthropic Claude AI reverse-engineering legacy z/OS COBOL code and migrate to Spring Boot microservices on Kubernetes
+In This project I demonstrate the Strangler Fig pattern for modernizing a legacy monolith z/OS COBOL system into Spring Boot microservices on Kubernetes, using a Java REST API gateway as the integration layer.
+- The process starts with Anthropic Claude AI reverse-engineering the legacy COBOL code to understand its functionality and identify the business capabilities that can be extracted into microservices. The Strangler Fig pattern allows you to incrementally replace parts of the legacy system with new microservices, while keeping the old system running until the new one is fully functional.
+- Next, I developed Spring Boot microservices for the identified business capabilities. Each microservice will be designed to handle a specific functionality and will communicate with the Java REST API gateway to access the legacy system's data and logic.
+- The Java REST API gateway will act as the integration layer between the legacy system and the new microservices. It will expose RESTful APIs that the new microservices can call to interact with the legacy system without needing to rewrite it all at once. This allows for a gradual transition from the legacy system to the new microservices architecture.
+- Finally, deployment new microservices to Kubernetes, which provides features like scaling, load balancing, and service discovery to manage the microservices in production. As you develop and deploy new microservices, you will continuously monitor their performance, optimize them as needed, and gradually replace more critical parts of the legacy system until it is fully modernized. 
 
-The Strangler Fig pattern allows you to incrementally replace parts of the legacy system with new microservices, while keeping the old system running until the new one is fully functional.
+
+***The Strangler Fig pattern allows you to incrementally replace parts of the legacy system with new microservices, while keeping the old system running until the new one is fully functional.***
 
 ## Key Components
 1. **Legacy z/OS COBOL System**: This is an existing legacy monolith system running on z/OS, which contains the business logic and data that you want to modernize. 
@@ -20,6 +25,21 @@ The Strangler Fig pattern allows you to incrementally replace parts of the legac
 13. **Change Management**: Implement a change management process to handle the transition from the legacy system to the new microservices. This includes managing changes to the codebase, coordinating deployments, and communicating changes to stakeholders.
 14. **Performance Optimization**: As you develop new microservices, continuously monitor and optimize their
 15. **FluxCD**: Use FluxCD to automate the deployment of your microservices to Kubernetes. This will allow you to manage your deployments using GitOps principles, ensuring that your infrastructure and application changes are version-controlled and auditable. [Read FluxCD installation and deployment instructions here](./docus/fluxcd.md).
+
+## COBOL legacy code reverse-engineering with Anthropic Claude AI
+I took advantage of Anthropic Claude AI's capabilities to analyze the COBOL codebase and extract valuable insights about the business logic and data structures. This process involved several steps:
+1. **Code Analysis**: Use Anthropic Claude AI to analyze the COBOL codebase
+2. **Identify Business Capabilities**: Identify the business capabilities and functionalities implemented in the COBOL code. This will help you determine which parts of the legacy system can be extracted into microservices.
+3. **Data Mapping**: Map the data structures used in the COBOL code to the data models that will be used in the new microservices. This will help ensure that the new microservices can interact with the legacy system's data effectively.
+4. **API Design**: Design the APIs that the new microservices will use to interact with the legacy system. This may involve creating new APIs or adapting existing ones to fit the new architecture. The Java REST API Gateway will play a crucial role in this process, as it will expose the necessary APIs for the new microservices to access the legacy system's functionality.
+
+I took the sourcs from the following repositories:
+- [COBOL codebase](https://github.com/hpatel-appliedai/aws-mainframe-modernization-carddemo/tree/main/app/cbl)
+
+COBOL codebase contains the following modules:
+- **[Account Management](account-service/README.md)**: This module handles account-related functionalities, such as creating accounts, updating account information, and managing account balances.
+- **[Credit Card Management](creditcard-service/README.md)**: This module manages credit card-related functionalities, including issuing new cards, updating card information, and handling card transactions.
+
 
 ## Architecture Diagram
 ```

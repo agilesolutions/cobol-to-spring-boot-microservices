@@ -8,4 +8,4 @@ spec:
   interval: 1m0s
   ref:
     branch: master
-  url: https://github.com/agilesolutions/cobol-to-microservices
+  url: https://github.com/agilesolutions/cobol-to-spring-boot-microservices

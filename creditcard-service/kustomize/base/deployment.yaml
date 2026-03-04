@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creditcard-service
+  namespace: services
+  labels:
+    app: creditcard-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: creditcard-service
+  template:
+    metadata:
+      labels:
+        app: creditcard-service
+    spec:
+      containers:
+        - name: creditcard-service
+          image: agilesolutions/creditcard-service:1.0.1
+          ports:
+            - containerPort: 8081

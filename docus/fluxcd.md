@@ -19,9 +19,9 @@ flux bootstrap github --owner=agilesolutions --repository=cobol-to-microservices
 2. How this FluxCD configuration was initially generated for this sample application:
 ```bash
 flux check --pre
-git clone https://github.com/agilesolutions/cobol-to-microservices.git
+git clone https://github.com/agilesolutions/cobol-to-spring-boot-microservices.git
 cd cobol-to-microservices
-flux create source git cobol-to-microservices --url=https://github.com/agilesolutions/cobol-to-microservices --branch=master --interval=1m --export > ./fluxCD/cobol-to-microservices.yaml
+flux create source git cobol-to-microservices --url=https://github.com/agilesolutions/cobol-to-spring-boot-microservices --branch=master --interval=1m --export > ./fluxCD/cobol-to-microservices.yaml
 flux create kustomization account-service --target-namespace=services --source=spring-graphsql --path="./account-service/kustomize/overlays/local" --prune=true --wait=true --interval=30m --retry-interval=2m --health-check-timeout=3m --export > ./fluxCD/account-service-kustomization.yaml
 flux create kustomization gateway --target-namespace=services --source=spring-graphsql --path="./gateway/kustomize/overlays/local" --prune=true --wait=true --interval=30m --retry-interval=2m --health-check-timeout=3m --export > ./fluxCD/gateway-kustomization.yaml
 ...

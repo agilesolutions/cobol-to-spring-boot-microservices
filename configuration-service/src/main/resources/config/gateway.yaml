@@ -30,7 +30,7 @@ spring:
         - id: legacy-customer-route
           uri: lb://zos-connect-service
           predicates:
-            - Path=/legacy/customers/**
+            - Path=/legacy/creditcards/**
           filters:
             # The gateway only validates the JWT and forwards it as a Bearer token to downstream services
             # - AddRequestHeader=Authorization,#{request.headers['Authorization']}
@@ -56,10 +56,10 @@ spring:
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
 
-        - id: customer-service-route
-          uri: lb://customer-service
+        - id: creditcard-service-route
+          uri: lb://creditcard-service
           predicates:
-            - Path=/api/customers/**
+            - Path=/api/cards/**
           filters:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
