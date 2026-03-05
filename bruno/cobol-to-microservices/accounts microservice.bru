@@ -1,0 +1,24 @@
+meta {
+  name: accounts microservice
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/accounts/00001001001
+  body: none
+  auth: bearer
+}
+
+headers {
+  API-Version: 2.0
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiUk9MRV9BRE1JTixST0xFX1VTRVIiLCJpYXQiOjE3NzIzNzcwODgsImV4cCI6MTc3MjQ2MzQ4OH0.CDJpP8-YSrmLV91_N5GzUpvzRM4pMtjhp_6-65cMYFE
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

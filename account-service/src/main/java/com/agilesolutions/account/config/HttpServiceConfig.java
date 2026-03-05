@@ -1,7 +1,6 @@
 package com.agilesolutions.account.config;
 
 import com.agilesolutions.account.rest.LegacyAccountClient;
-import com.agilesolutions.product.rest.StockClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

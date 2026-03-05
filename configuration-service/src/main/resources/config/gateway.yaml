@@ -18,32 +18,41 @@ spring:
         # Legacy (z/OS Connect)
         # =========================
         - id: legacy-account-route
-          uri: lb://zos-connect-service
+          uri: lb://account-service
           predicates:
-            - Path=/legacy/accounts/**
+            - Path=/api/accounts/**
           filters:
             # The gateway only validates the JWT and forwards it as a Bearer token to downstream services
             # - AddRequestHeader=Authorization,#{request.headers['Authorization']}
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
+            # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
+            - AddRequestHeader=API-Version, 1.0+
 
-        - id: legacy-customer-route
-          uri: lb://zos-connect-service
+        - id: legacy-creditcard-service-route
+          uri: lb://creditcard-service
           predicates:
-            - Path=/legacy/creditcards/**
+            - Path=/api/cards/**
           filters:
-            # The gateway only validates the JWT and forwards it as a Bearer token to downstream services
-            # - AddRequestHeader=Authorization,#{request.headers['Authorization']}
+            # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
+            # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
+            - AddRequestHeader=API-Version, 1.0+
 
-        # =========================
-        # propagate the authorization service name by using the Spring Cloud Gateway as a middleman
-        # =========================
-        - id: auth-service-route
-          uri: lb://authorization-service
+
+        - id: legacy-product-service-route
+          uri: lb://product-service
           predicates:
-            - Path=/.well-known/openid-configuration, /protocol/openid-connect/**
+            - Path=/api/assets/**
+          filters:
+            # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
+            # Recommended: Remove the session cookie so downstream services only see the Bearer token
+            - RemoveRequestHeader=Cookie
+            # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
+            - AddRequestHeader=API-Version, 1.0+
+
+
         # =========================
         # New Microservices
         # =========================
@@ -55,6 +64,8 @@ spring:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
+            # Baseline the API version for new microservices, this can be used by downstream services to route to the correct controller or service implementation
+            - AddRequestHeader=API-Version, 2.0+
 
         - id: creditcard-service-route
           uri: lb://creditcard-service
@@ -64,6 +75,8 @@ spring:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
+            # Baseline the API version for new microservices, this can be used by downstream services to route to the correct controller or service implementation
+            - AddRequestHeader=API-Version, 2.0+
 
         - id: product-service-route
           uri: lb://product-service
@@ -73,6 +86,16 @@ spring:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
+            # Baseline the API version for new microservices, this can be used by downstream services to route to the correct controller or service implementation
+            - AddRequestHeader=API-Version, 2.0+
+
+        # =========================
+        # propagate the authorization service name by using the Spring Cloud Gateway as a middleman
+        # =========================
+        - id: auth-service-route
+          uri: lb://authorization-service
+          predicates:
+            - Path=/.well-known/openid-configuration, /protocol/openid-connect/**
 
         # =========================
         # Strangler Fig - Dual Run

@@ -35,7 +35,7 @@ public class AccountController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(
             summary     = "Get account by ID",
-            description = "Replaces COBOL GET-ACCT-DATA / READ ACCTDAT paragraph"
+            description = "COBOL GET-ACCT-DATA / READ ACCTDAT paragraph"
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Account found"),

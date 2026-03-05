@@ -69,3 +69,35 @@ Clients (Web/Mobile)
 11. **Feedback Loop**: Establish a feedback loop with stakeholders to gather insights and feedback on the new microservices. This will help you identify areas for improvement and ensure that the new architecture continues to meet business needs effectively.
 
 <img title="Strangler Fig Migration Roadmap" alt="Alt text" src="/docus/strangler-fig.png"/>
+
+
+## Testing
+To test the microservices, use Bruno or curl to send HTTP requests to the Java REST API Gateway and verify that the responses are correct.
+
+## Spring Framework 7 API Versioning to Gate Routing services
+To implement API versioning in the Java REST API Gateway, you can use Spring Framework 7's support for API versioning. This allows you to route requests to different versions of your microservices based on the API version specified in the request.
+This is how traffic between new world and old world can be routed to the appropriate microservices or legacy services based on the API version specified in the request. This allows you to maintain backward compatibility while gradually migrating functionality from the legacy system to the new microservices.
+- Baseline version 1+ is routing to legacy services
+- Version 2+ is routing to new microservices
+
+## Bruno test API version based routing
+To test API version-based routing using Bruno, you can send HTTP requests to the Java REST API Gateway with different API version headers and verify that the requests are routed to the correct services. For example:
+- Send a request with `API-Version: 1` header to route to legacy services.
+- Send a request with `API-Version: 2` header to route to new microservices.
+- Verify the responses to ensure that the correct services are being called based on the API version specified in the request.
+- You can also use curl to test API version-based routing by including the appropriate headers in your HTTP requests. For example:
+```
+curl -H "API-Version: 1" http://localhost:8080/api/accounts/00001001001
+curl -H "API-Version: 2" http://localhost:8080/api/accounts/00001001001
+```
+- Verify the responses to ensure that the correct services are being called based on the API version specified in the request.
+
+**[BRUNO Collection ](bruno/cobol-to-microservices)**
+
+## Spring Framework 7 Built-in Resilience Features
+To implement method resiliency and retry mechanisms on new Spring Boot microservices, I applied Spring Framework 7's support for resiliency patterns such as Circuit Breaker, Retry, and Bulkhead. These patterns help to improve the resilience of your microservices by allowing them to gracefully handle failures and retries when calling external services, such as the legacy system or other microservices.
+- **Circuit Breaker**: This pattern allows you to detect when an external service is failing and to prevent further calls to that service until it has recovered. This helps to avoid cascading failures and allows your microservices to continue functioning even when an external service is down.
+- **Retry**: This pattern allows you to automatically retry failed calls to external services a specified number of times with a delay between retries. This can help to handle transient failures and improve the chances of a successful call.
+- **Bulkhead**: This pattern allows you to isolate different parts of your microservices to prevent failures in one part from affecting the entire system. This can help to improve the overall resilience of your microservices by containing failures and allowing other parts of the system to continue functioning.
+- **Fallback**: This pattern allows you to provide a fallback response when an external service call fails. This can help to maintain a good user experience even when there are issues with external services.
+- **Timeouts**: This pattern allows you to set timeouts for calls to external services. This can help to prevent your microservices from waiting indefinitely for a response from an external service that may be experiencing issues.
