@@ -60,8 +60,7 @@ public class AccountController {
             @PathVariable String accountId) {
 
         log.debug("GET /accounts/{}", accountId);
-        ResponseEntity<ApiResponseDto<AccountResponseDto>> response = legacyAccountClient.getAccount(accountId);
-        return response;
+        return legacyAccountClient.getAccount(accountId);
     }
 
     // ─── COBOL: GET-ACCT-DATA (READ) ────────────────────────────────────────

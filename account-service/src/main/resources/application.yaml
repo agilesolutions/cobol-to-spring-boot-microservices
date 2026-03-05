@@ -75,15 +75,3 @@ logging:
   level:
     com.agilesolutions: DEBUG
     org.springframework.security: INFO
-
-twelvedata:
-  api:
-    url: https://api.twelvedata.com/
-    key: demo
-
-service:
-  retry:
-    initial_delay: 1000
-    max-delay: 5000
-    multiplier: 2.0
-    max-attempts: 3

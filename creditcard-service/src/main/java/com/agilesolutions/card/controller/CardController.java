@@ -2,6 +2,7 @@
 package com.agilesolutions.card.controller;
 
 import com.agilesolutions.card.domain.dto.*;
+import com.agilesolutions.card.rest.LegacyCardClient;
 import com.agilesolutions.card.service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,6 +44,49 @@ public class CardController {
 
     private final CardService cardService;
 
+    private final LegacyCardClient legacyCardClient;
+
+
+    // ─── COBOL: GET-CARD-DATA / READ CARDDAT KEY = CARD-NUM ──────────────────
+    @GetMapping(name = "/{cardNum}", version = "1.0.0")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @Operation(
+            summary     = "Get card by number",
+            description = "call COBOL GET-CARD-DATA / READ CARDDAT paragraph through gateway service (version 1.0.0 for backward compatibility with legacy clients)"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Card found"),
+            @ApiResponse(responseCode = "404", description = "Card not found (FILE STATUS '23')")
+    })
+    public ResponseEntity<ApiResponseDto<CardResponseDto>> getLegacyCard(
+            @Parameter(description = "16-digit card number",
+                    example = "4000200030004000")
+            @PathVariable String cardNum) {
+
+        log.debug("GET /cards/{}", cardNum);
+        return legacyCardClient.getCard(cardNum);
+    }
+
+    @GetMapping(name = "/{cardNum}", version = "2.0.0")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @Operation(
+            summary     = "Get card by number",
+            description = "COBOL GET-CARD-DATA / READ CARDDAT paragraph through gateway service (version 2.0.0 with direct service call and enhanced response model for new clients)"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Card found"),
+            @ApiResponse(responseCode = "404", description = "Card not found (FILE STATUS '23')")
+    })
+    public ResponseEntity<ApiResponseDto<CardResponseDto>> getCard(
+            @Parameter(description = "16-digit card number",
+                    example = "4000200030004000")
+            @PathVariable String cardNum) {
+
+        log.debug("GET /cards/{}", cardNum);
+        return ResponseEntity.ok(ApiResponseDto.success(
+                "Card retrieved", cardService.getCardByNum(cardNum)));
+    }
+
     // ─── COBOL: PROCESS-ENTER-KEY (CREATE) + WRITE CARDDAT ───────────────────
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -65,26 +109,6 @@ public class CardController {
                 .body(ApiResponseDto.success("Card created successfully", response));
     }
 
-    // ─── COBOL: GET-CARD-DATA / READ CARDDAT KEY = CARD-NUM ──────────────────
-    @GetMapping("/{cardNum}")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @Operation(
-        summary     = "Get card by number",
-        description = "Replaces COBOL GET-CARD-DATA / READ CARDDAT paragraph"
-    )
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Card found"),
-        @ApiResponse(responseCode = "404", description = "Card not found (FILE STATUS '23')")
-    })
-    public ResponseEntity<ApiResponseDto<CardResponseDto>> getCard(
-            @Parameter(description = "16-digit card number",
-                       example = "4000200030004000")
-            @PathVariable String cardNum) {
-
-        log.debug("GET /cards/{}", cardNum);
-        return ResponseEntity.ok(ApiResponseDto.success(
-                "Card retrieved", cardService.getCardByNum(cardNum)));
-    }
 
     // ─── COBOL: UPDATE-CARD-INFO + REWRITE CARDDAT ───────────────────────────
     @PutMapping("/{cardNum}")
