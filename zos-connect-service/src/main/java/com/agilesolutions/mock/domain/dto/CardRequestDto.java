@@ -1,7 +1,7 @@
 // domain/dto/CardRequestDto.java
 package com.agilesolutions.mock.domain.dto;
 
-import com.agilesolutions.card.domain.enums.CardStatus;
+import com.agilesolutions.mock.domain.enums.CardStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

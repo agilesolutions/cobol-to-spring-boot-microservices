@@ -1,7 +1,7 @@
 // dto/AccountUpdateDto.java
 package com.agilesolutions.mock.domain.dto;
 
-import com.agilesolutions.account.domain.enums.AccountStatus;
+import com.agilesolutions.mock.domain.enums.AccountStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;

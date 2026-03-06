@@ -12,12 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @Tag(
         name = "CRUD REST APIs for accessing stock prices",
@@ -50,6 +53,8 @@ public class ProductController {
     )
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/stockPrices/{company}", produces = MediaType.APPLICATION_JSON_VALUE,version = "1.0")
+    // Jitter 100 : this ensures that even if 100 clients fail at the exact same moment, their retries are spread out over a wider window, smoothing the load on the target server.
+    @Retryable(maxRetries = 3L, includes = {IOException.class}, multiplier = 2, jitter = 100)
     public ResponseEntity<StockDto> getLatestStockPrices(@PathVariable("company") String company) {
 
         log.info("Get stock prices for: {}", company);

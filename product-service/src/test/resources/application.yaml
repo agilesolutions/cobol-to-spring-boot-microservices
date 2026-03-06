@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: gateway
+  mvc:
+    apiversion:
+      use:
+        header: "API-Version"
   security:
     oauth2:
       resourceserver:
