@@ -1,4 +1,9 @@
 # Anthropic Claude AI reverse-engineering legacy z/OS COBOL code and migrate to Spring Boot microservices on Kubernetes
+
+## About modernization (Before we start)
+[Migrating legacy COBOL systems to modern architectures is not a language translation exercise (e.g., to Java or C Sharp). It is fundamentally a business and architectural transformation.](/docus/COBOLMigration.md) to Java or C#, it requires a comprehensive approach to understand the existing COBOL codebase, identify business capabilities, and design a new architecture that can support the modern microservices paradigm. This process involves several key steps, including reverse-engineering the COBOL code, designing microservices based on identified business capabilities, implementing a Java REST API gateway for integration, and deploying the new microservices to Kubernetes for scalability and manageability. By following this approach, organizations can successfully transition from a legacy COBOL monolith to a modern microservices architecture that is more agile, scalable, and maintainable.
+
+## About this project
 In This project I demonstrate the Strangler Fig pattern for modernizing a legacy monolith z/OS COBOL system into Spring Boot microservices on Kubernetes, using a Java REST API gateway as the integration layer.
 - The process starts with Anthropic Claude AI reverse-engineering the legacy COBOL code to understand its functionality and identify the business capabilities that can be extracted into microservices. The Strangler Fig pattern allows you to incrementally replace parts of the legacy system with new microservices, while keeping the old system running until the new one is fully functional.
 - Next, I developed Spring Boot microservices for the identified business capabilities. Each microservice will be designed to handle a specific functionality and will communicate with the Java REST API gateway to access the legacy system's data and logic.
