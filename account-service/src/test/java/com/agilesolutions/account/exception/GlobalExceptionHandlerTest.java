@@ -81,7 +81,7 @@ class GlobalExceptionHandlerTest {
                         List.of("Expiry date must be after open date",
                                 "Cash credit limit cannot exceed credit limit")));
 
-        mockMvc.perform(get("/accounts/00001001001"))
+        mockMvc.perform(get("/api/accounts/00001001001").header("API-Version", "2.0.0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errorCode").value("ACCT-0004"))
@@ -97,7 +97,7 @@ class GlobalExceptionHandlerTest {
         when(accountService.getAccountById("00001001001"))
                 .thenThrow(new OptimisticLockException("Concurrent update detected"));
 
-        mockMvc.perform(get("/accounts/00001001001"))
+        mockMvc.perform(get("/api/accounts/00001001001").header("API-Version", "2.0.0"))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errorCode").value("ERR_CONCURRENT_UPDATE"))
@@ -112,7 +112,7 @@ class GlobalExceptionHandlerTest {
         when(accountService.getAccountById("00001001001"))
                 .thenThrow(new RuntimeException("Unexpected DB failure"));
 
-        mockMvc.perform(get("/accounts/00001001001"))
+        mockMvc.perform(get("/api/accounts/00001001001").header("API-Version", "2.0.0"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errorCode").value("ERR_INTERNAL"));

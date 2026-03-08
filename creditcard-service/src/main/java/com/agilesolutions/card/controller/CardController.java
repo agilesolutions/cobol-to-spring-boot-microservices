@@ -67,7 +67,7 @@ public class CardController {
         return legacyCardClient.getCard(cardNum);
     }
 
-    @GetMapping(name = "/{cardNum}", version = "2.0.0")
+    @GetMapping(value = "/{cardNum}", version = "2.0.0")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(
             summary     = "Get card by number",

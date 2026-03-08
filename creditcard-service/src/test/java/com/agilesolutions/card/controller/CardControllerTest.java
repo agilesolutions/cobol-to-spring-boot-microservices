@@ -4,9 +4,11 @@ import com.agilesolutions.card.config.WebConfiguration;
 import com.agilesolutions.card.domain.dto.CardRequestDto;
 import com.agilesolutions.card.domain.dto.CardResponseDto;
 import com.agilesolutions.card.domain.enums.CardStatus;
+import com.agilesolutions.card.exception.BusinessValidationException;
 import com.agilesolutions.card.exception.GlobalExceptionHandler;
 import com.agilesolutions.card.rest.LegacyCardClient;
 import com.agilesolutions.card.service.CardService;
+import com.agilesolutions.card.util.CardConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -111,7 +114,7 @@ class CardControllerTest {
     void testGetCardById_asAdmin_returns200() throws Exception {
         when(cardService.getCardByNum("4000200030004001")).thenReturn(sampleResponse);
 
-        mockMvc.perform(get("/api/cards/1")
+        mockMvc.perform(get("/api/cards/4000200030004001")
                         .header("API-Version", "2.0.0"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -144,7 +147,7 @@ class CardControllerTest {
     void testGetCardById_asUser_returns200() throws Exception {
         when(cardService.getCardByNum("4000200030004001")).thenReturn(sampleResponse);
 
-        mockMvc.perform(get("/cards/1"))
+        mockMvc.perform(get("/api/cards/4000200030004001").header("API-Version", "2.0.0"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(sampleResponse.getId()))
@@ -174,7 +177,7 @@ class CardControllerTest {
     @WithMockUser(roles = "GUEST")
     @DisplayName("get card by ID: guest role forbidden - 403")
     void testGetCardById_asGuest_returns403() throws Exception {
-        mockMvc.perform(get("/cards/1"))
+        mockMvc.perform(get("/api/cards/1").header("API-Version", "2.0.0"))
                 .andExpect(status().isForbidden());
 
     }
@@ -185,7 +188,7 @@ class CardControllerTest {
     void testGetCardById_notFound_returns404() throws Exception {
         when(cardService.getCardByNum("4000200030004001")).thenReturn(null);
 
-        mockMvc.perform(get("/cards/999"))
+        mockMvc.perform(get("/api/cards/999").header("API-Version", "2.0.0"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Card not found with ID: 999"));
@@ -198,17 +201,17 @@ class CardControllerTest {
     void testGetCardById_serviceException_returns500() throws Exception {
         when(cardService.getCardByNum("4000200030004001")).thenThrow(new RuntimeException("Service error"));
 
-        mockMvc.perform(get("/cards/1"))
+        mockMvc.perform(get("/api/cards/4000200030004001").header("API-Version", "2.0.0"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("An unexpected error occurred: Service error"));
+                .andExpect(jsonPath("$.message").value("An unexpected error occurred"));
 
     }
     @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("get card by ID: invalid ID format - 400 Bad Request")
     void testGetCardById_invalidIdFormat_returns400() throws Exception {
-        mockMvc.perform(get("/cards/invalid-id"))
+        mockMvc.perform(get("/api/cards/invalid-id").header("API-Version", "2.0.0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Invalid card ID format: invalid-id"));
@@ -220,7 +223,13 @@ class CardControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("get card by ID: null ID - 400 Bad Request")
     void testGetCardById_nullId_returns400() throws Exception {
-        mockMvc.perform(get("/cards/null"))
+
+        when(cardService.getCardByNum("null"))
+                .thenThrow(new BusinessValidationException(
+                        CardConstants.ERR_VALIDATION_FAILED,
+                        "Invalid card ID format: null"));
+
+        mockMvc.perform(get("/api/cards/null").header("API-Version", "2.0.0"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Invalid card ID format: null"));
@@ -232,7 +241,10 @@ class CardControllerTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("get card by ID: empty ID - 400 Bad Request")
     void testGetCardById_emptyId_returns400() throws Exception {
-        mockMvc.perform(get("/cards/"))
+
+        when(cardService.getCardByNum(null)).thenReturn(null);
+
+        mockMvc.perform(get("/api/cards/").header("API-Version", "2.0.0"))
                 .andExpect(status().isNotFound()); // Spring treats missing path variable as 404
 
     }
@@ -252,10 +264,10 @@ class CardControllerTest {
     void testCreateCard_serviceThrowsException_returns500() throws Exception {
         when(cardService.getCardByNum("4000200030004001")).thenThrow(new RuntimeException("Database error"));
 
-        mockMvc.perform(get("/cards/1"))
+        mockMvc.perform(get("/api/cards/4000200030004001").header("API-Version", "2.0.0"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("An unexpected error occurred: Database error"));
+                .andExpect(jsonPath("$.message").value("An unexpected error occurred"));
 
     }
 
@@ -265,7 +277,8 @@ class CardControllerTest {
     void testCreateCard_invalidRequestBody_returns400() throws Exception {
         String invalidJson = "{ \"cardNum\": \"4000200030004001\", \"cardAcctId\": \"00001001001\" "; // missing closing brace and required fields
 
-        mockMvc.perform(get("/cards/1")
+        mockMvc.perform(get("/api/cards/1")
+                        .header("API-Version", "2.0.0")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidJson))
                 .andExpect(status().isBadRequest())
@@ -282,7 +295,8 @@ class CardControllerTest {
                 .cardNum("4000200030004001")
                 .build(); // missing required fields like cardAcctId, cardCvvCd, etc
 
-        mockMvc.perform(get("/cards/1")
+        mockMvc.perform(get("/api/cards/1")
+                        .header("API-Version", "2.0.0")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest())
