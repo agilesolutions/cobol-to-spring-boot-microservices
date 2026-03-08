@@ -1,12 +1,15 @@
-// test/exception/GlobalExceptionHandlerTest.java
 package com.agilesolutions.account.exception;
 
 import com.agilesolutions.account.controller.AccountController;
+import com.agilesolutions.account.rest.LegacyAccountClient;
 import com.agilesolutions.account.service.AccountService;
 import com.agilesolutions.account.util.AccountConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration;
+import org.springframework.boot.security.oauth2.server.resource.autoconfigure.servlet.OAuth2ResourceServerAutoConfiguration;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -17,6 +20,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,8 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *   COBOL FILE STATUS '09'     -> OptimisticLockException     -> 409
  *   COBOL EXEC CICS NOTAUTH    -> AccessDeniedException       -> 403
  */
-@WebMvcTest(AccountController.class)
-@Import(GlobalExceptionHandler.class)
+@WebMvcTest(controllers = AccountController.class,
+        excludeAutoConfiguration = {
+                OAuth2ResourceServerAutoConfiguration.class,
+                SecurityAutoConfiguration.class // Usually needed as well to fully bypass
+        })
+@AutoConfigureMockMvc(addFilters = false)
+@Import({GlobalExceptionHandler.class})
 @DisplayName("GlobalExceptionHandler - COBOL error paragraph tests")
 class GlobalExceptionHandlerTest {
 
@@ -39,6 +48,9 @@ class GlobalExceptionHandlerTest {
 
     @MockitoBean
     private AccountService accountService;
+
+    @MockitoBean
+    private LegacyAccountClient legacyAccountClient;
 
     @Test
     @WithMockUser(roles = "USER")
@@ -49,7 +61,8 @@ class GlobalExceptionHandlerTest {
                         "Account not found: 99999999999",
                         AccountConstants.ERR_ACCOUNT_NOT_FOUND));
 
-        mockMvc.perform(get("/accounts/99999999999"))
+        mockMvc.perform(get("/api/accounts/99999999999").header("API-Version", "2.0.0"))
+                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.errorCode").value("ACCT-0001"))

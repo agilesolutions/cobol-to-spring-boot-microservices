@@ -1,9 +1,11 @@
 package com.agilesolutions.card.controller;
 
+import com.agilesolutions.card.config.WebConfiguration;
 import com.agilesolutions.card.domain.dto.CardRequestDto;
 import com.agilesolutions.card.domain.dto.CardResponseDto;
 import com.agilesolutions.card.domain.enums.CardStatus;
 import com.agilesolutions.card.exception.GlobalExceptionHandler;
+import com.agilesolutions.card.rest.LegacyCardClient;
 import com.agilesolutions.card.service.CardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -11,6 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration;
+import org.springframework.boot.security.oauth2.server.resource.autoconfigure.servlet.OAuth2ResourceServerAutoConfiguration;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -23,11 +28,17 @@ import java.time.LocalDate;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(CardController.class)
-@Import(GlobalExceptionHandler.class)
+@WebMvcTest(controllers = CardController.class,
+        excludeAutoConfiguration = {
+                OAuth2ResourceServerAutoConfiguration.class,
+                SecurityAutoConfiguration.class // Usually needed as well to fully bypass
+        })
+@AutoConfigureMockMvc(addFilters = false)
+@Import({GlobalExceptionHandler.class, WebConfiguration.class})
 @DisplayName("CardController - REST API endpoint tests")
 class CardControllerTest {
 
@@ -35,6 +46,8 @@ class CardControllerTest {
     private MockMvc mockMvc;
     @MockitoBean
     private CardService cardService;
+    @MockitoBean
+    private LegacyCardClient legacyCardClient;
 
     private ObjectMapper objectMapper;
     private CardResponseDto sampleResponse;
@@ -98,7 +111,9 @@ class CardControllerTest {
     void testGetCardById_asAdmin_returns200() throws Exception {
         when(cardService.getCardByNum("4000200030004001")).thenReturn(sampleResponse);
 
-        mockMvc.perform(get("/cards/1"))
+        mockMvc.perform(get("/api/cards/1")
+                        .header("API-Version", "2.0.0"))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(sampleResponse.getId()))

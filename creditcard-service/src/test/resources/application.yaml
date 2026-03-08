@@ -3,7 +3,12 @@ server:
 
 spring:
   application:
-    name: ccm
+    name: creditcard-service
+  mvc:
+    apiversion:
+      enabled: true
+      use:
+        header: "API-Version"
   datasource:
     DriverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5438/shares
@@ -37,4 +42,5 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.flywaydb: INFO
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
 

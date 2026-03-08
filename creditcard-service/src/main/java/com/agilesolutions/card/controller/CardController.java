@@ -48,7 +48,7 @@ public class CardController {
 
 
     // ─── COBOL: GET-CARD-DATA / READ CARDDAT KEY = CARD-NUM ──────────────────
-    @GetMapping(name = "/{cardNum}", version = "1.0.0")
+    @GetMapping(value = "/{cardNum}", version = "1.0.0")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(
             summary     = "Get card by number",

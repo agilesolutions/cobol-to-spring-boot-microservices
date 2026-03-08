@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -88,7 +87,6 @@ class AccountControllerTest {
     // ─── POST /accounts ───────────────────────────────────────────────────────
 
     @Test
-    @WithMockUser(roles = "ADMIN")
     @DisplayName("POST /accounts: admin creates account - 201 Created")
     void testCreateAccount_asAdmin_returns201() throws Exception {
         when(accountService.createAccount(any(AccountRequestDto.class)))
@@ -106,7 +104,6 @@ class AccountControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
     @DisplayName("POST /accounts: user role forbidden - 403")
     void testCreateAccount_asUser_returns403() throws Exception {
         mockMvc.perform(post("/accounts")
@@ -119,7 +116,6 @@ class AccountControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
     @DisplayName("POST /accounts: invalid accountId - 400 Bad Request")
     void testCreateAccount_invalidAccountId_returns400() throws Exception {
         sampleRequest.setAccountId("INVALID"); // not 11 digits
@@ -136,7 +132,6 @@ class AccountControllerTest {
     // ─── GET /accounts/{accountId} ────────────────────────────────────────────
 
     @Test
-    @WithMockUser(roles = "USER")
     @DisplayName("GET /accounts/{id}: account found - 200 OK")
     void testGetAccount_found_returns200() throws Exception {
         when(accountService.getAccountById("00001001001")).thenReturn(sampleResponse);
@@ -149,7 +144,6 @@ class AccountControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
     @DisplayName("GET /accounts/{id}: account not found - 404")
     void testGetAccount_notFound_returns404() throws Exception {
         when(accountService.getAccountById("99999999999"))
@@ -173,7 +167,6 @@ class AccountControllerTest {
     // ─── PUT /accounts/{accountId} ────────────────────────────────────────────
 
     @Test
-    @WithMockUser(roles = "ADMIN")
     @DisplayName("PUT /accounts/{id}: successful update - 200 OK")
     void testUpdateAccount_success_returns200() throws Exception {
         AccountUpdateDto updateDto = AccountUpdateDto.builder()
@@ -195,7 +188,6 @@ class AccountControllerTest {
     // ─── DELETE /accounts/{accountId} ────────────────────────────────────────
 
     @Test
-    @WithMockUser(roles = "ADMIN")
     @DisplayName("DELETE /accounts/{id}: logical deactivation - 204 No Content")
     void testDeactivateAccount_success_returns204() throws Exception {
         doNothing().when(accountService).deleteAccount("00001001001");
@@ -209,7 +201,6 @@ class AccountControllerTest {
     // ─── GET /accounts ────────────────────────────────────────────────────────
 
     @Test
-    @WithMockUser(roles = "USER")
     @DisplayName("GET /accounts: paginated list - 200 OK")
     void testGetAllAccounts_returns200() throws Exception {
         PagedResponseDto<AccountResponseDto> pagedResponse =
