@@ -10,7 +10,6 @@ Characteristics of these systems:
 - Batch + online tightly coupled
 - Business rules scattered across thousands of programs
 - Implicit transaction flows
-- Screen-driven logic (3270)
 
 Simply translating that code to Java creates a “distributed monolith.”
 
