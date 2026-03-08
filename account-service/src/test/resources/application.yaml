@@ -25,3 +25,4 @@ logging:
     com.agilesolutions: WARN
     org.springframework.security: WARN
     org.hibernate: WARN
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE

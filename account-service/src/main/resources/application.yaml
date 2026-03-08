@@ -5,6 +5,7 @@ spring:
   application:
     name: account-service
   mvc:
+    enabled: true
     apiversion:
       use:
         header: API-Version
