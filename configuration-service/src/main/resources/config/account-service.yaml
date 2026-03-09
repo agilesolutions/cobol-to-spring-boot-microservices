@@ -1,0 +1,4 @@
+
+features:
+  flags:
+    account-service: true

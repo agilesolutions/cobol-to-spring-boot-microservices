@@ -1,20 +1,15 @@
 server:
   port: 8084
 
-
 management:
   endpoint:
     health:
       show-details: ALWAYS
-  tracing:
-    enabled: true
   endpoints:
     web:
       exposure:
-        include: health,metrics,prometheus
-    export:
-      prometheus:
-        enabled: true
+        include: health,metrics,prometheus, refresh
+
 spring:
   application:
     name: product-service

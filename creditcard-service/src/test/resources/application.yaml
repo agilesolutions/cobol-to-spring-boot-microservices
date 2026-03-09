@@ -31,11 +31,9 @@ spring:
     locations: classpath:db/migration
     validate-on-migrate: true
     out-of-order: false
-
   sql:
     init:
       mode: never   # disable schema.sql/data.sql when using Flyway
-
 
 logging:
   level:

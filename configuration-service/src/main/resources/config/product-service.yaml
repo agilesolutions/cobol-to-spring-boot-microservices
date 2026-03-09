@@ -1,3 +1,7 @@
+features:
+  flags:
+    product-service: true
+
 twelvedata:
   api:
     url: https://api.twelvedata.com/
