@@ -6,6 +6,12 @@ spring:
     name: account-service
   config:
     import: "optional:configserver:http://localhost:8091/"
+  # Spring Bus for RabbitMQ to refresh configuration across services
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
   mvc:
     enabled: true
     apiversion:
@@ -72,7 +78,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus, refresh
+        include: health,info,metrics,prometheus, refresh, bus-refresh, bus-env
   endpoint:
     health:
       show-details: always

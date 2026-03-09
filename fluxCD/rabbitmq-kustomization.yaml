@@ -6,12 +6,12 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m0s
-  path: ./kustomize-observability/base
+  path: ./kustomize-rabbitmq/base
   prune: true
   retryInterval: 2m0s
   sourceRef:
     kind: GitRepository
     name: cobol-to-microservices
-  targetNamespace: monitoring
+  targetNamespace: messaging
   timeout: 3m0s
   wait: true
