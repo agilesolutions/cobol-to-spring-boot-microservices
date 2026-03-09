@@ -36,7 +36,7 @@ I took advantage of Anthropic Claude AI's capabilities to analyze the COBOL code
 To Migrate the legacy COBOL system to Spring Boot microservices, I first reverse-engineered the COBOL code to understand its functionality and identify the business capabilities that can be extracted into microservices.
 Then I designed the new microservices based on the identified business capabilities and implemented a Java REST API gateway to allow the new microservices to interact with the legacy system without needing to rewrite it all at once. Finally, I deployed the new microservices to Kubernetes, allowing for scalability and manageability in production.
 Then I brought in Spring Cloud capabilities to implement method resiliency and retry mechanisms on new Spring Boot microservices, ensuring that they can gracefully handle failures and maintain a good user experience even when there are issues with external services.
-This process involved several steps:
+**This process involved several steps:**
 1. Enable Spring Cloud gateway in the Java REST API Gateway to route requests to the appropriate microservices or legacy services based on the API version specified in the request.
 2. Implement API versioning in the Java REST API Gateway to allow for backward compatibility while gradually migrating functionality from the legacy system to the new microservices.
 3. Upgrade to Java 25, Spring Boot 4 and Spring Framework 7 to take advantage of the latest features and improvements in the Java ecosystem, including enhanced support for microservices architecture and improved performance, like virtual threads and structured concurrency, which can help to improve the scalability and responsiveness of your microservices.
@@ -53,7 +53,8 @@ This process involved several steps:
 13. Implement Spring Cloud Timeouts to set timeouts for calls to external services. This can help to prevent your microservices from waiting indefinitely for a response from an external service that may be experiencing issues.
 14. Implement Spring Cloud Config dynamic configuration updates to allow for changes to the configuration of the new microservices without needing to redeploy them. This can help to improve the agility of your microservices and allow for faster response to changing business needs.
 15. Implement feature flags with Spring Cloud Config to allow for the gradual rollout of new features in the new microservices. This can help to mitigate risks associated with deploying new features and allow for easier rollback if issues arise.
-16. Implement Spring Cloud Bus messaging capabilities to enable feature flags and configuration changes to be propagated across all instances of the new microservices in real-time. This ensures that all microservices are using the latest configuration and feature flag settings without needing to restart or redeploy them.
+16. Implement Spring Cloud Bus and RabbitMQ messaging capabilities to enable feature flags and configuration changes to be propagated across all instances of the new microservices in real-time. This ensures that all microservices are using the latest configuration and feature flag settings without needing to restart or redeploy them.
+17. Implement Spring Cloud Config Monitor triggered by GitHub Webhooks to automatically refresh the configuration of the new microservices when changes are made to the configuration repository. This can help to ensure that your microservices are always using the latest configuration settings and can respond quickly to changes in the environment or business needs.
 
 I took the sourcs from the following repositories:
 - [COBOL codebase](https://github.com/hpatel-appliedai/aws-mainframe-modernization-carddemo/tree/main/app/cbl)

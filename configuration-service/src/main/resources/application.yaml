@@ -36,7 +36,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info,metrics,prometheus, refresh, bus-refresh, bus-env, monitor
   health:
     readiness-state:
       enabled: true
