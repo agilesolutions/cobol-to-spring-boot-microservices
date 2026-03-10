@@ -27,7 +27,7 @@ spring:
       discovery:
         locator:
           enabled: true
-          lower-case-service-id: true
+          lowerCaseServiceId: true
   security:
     oauth2:
       resourceserver:

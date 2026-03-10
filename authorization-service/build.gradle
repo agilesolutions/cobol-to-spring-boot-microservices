@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     // Spring Boot 4.0.0 (and its Milestone/RC versions) requires Java 17+ baseline
-    id 'org.springframework.boot' version '4.0.0'
+    id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -28,7 +28,7 @@ configurations {
 ext {
     commit = commit()
     branchName = branchName()
-    set('springCloudVersion', "2024.0.0")
+    set('springCloudVersion', "2025.1.0")
 }
 
 repositories {

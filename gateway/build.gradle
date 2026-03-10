@@ -3,12 +3,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     // Spring Boot 4.0.0 (and its Milestone/RC versions) requires Java 17+ baseline
-    id 'org.springframework.boot' version '4.0.0'
+    id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.agilesolutions.gateway'
 version = '1.0.1'
+description = 'API Gateway for the microservices architecture'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -27,7 +28,7 @@ configurations {
 ext {
     commit = commit()
     branchName = branchName()
-    set('springCloudVersion', "2024.0.0")
+    set('springCloudVersion', "2025.1.0")
 }
 
 repositories {
@@ -44,7 +45,7 @@ dependencyManagement {
 
 
 dependencies {
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -64,6 +65,7 @@ dependencies {
 
     // tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }

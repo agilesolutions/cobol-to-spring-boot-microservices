@@ -20,7 +20,7 @@ spring:
         - id: legacy-account-route
           uri: lb://account-service
           predicates:
-            - Path=/api/accounts/**
+            - Path=/legacy/api/accounts/**
           filters:
             # The gateway only validates the JWT and forwards it as a Bearer token to downstream services
             # - AddRequestHeader=Authorization,#{request.headers['Authorization']}
@@ -28,29 +28,33 @@ spring:
             - RemoveRequestHeader=Cookie
             # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
             - AddRequestHeader=API-Version, 1.0+
+            # Forwards the original request path as a header, this can be used by downstream services to route to the correct controller or service implementation
+            - StripPrefix=1
 
         - id: legacy-creditcard-service-route
           uri: lb://creditcard-service
           predicates:
-            - Path=/api/cards/**
+            - Path=/legacy/api/cards/**
           filters:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
             # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
             - AddRequestHeader=API-Version, 1.0+
+            - StripPrefix=1
 
 
         - id: legacy-product-service-route
           uri: lb://product-service
           predicates:
-            - Path=/api/assets/**
+            - Path=/legacy/api/assets/**
           filters:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
             - RemoveRequestHeader=Cookie
             # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
             - AddRequestHeader=API-Version, 1.0+
+            - StripPrefix=1
 
 
         # =========================
@@ -70,7 +74,7 @@ spring:
         - id: creditcard-service-route
           uri: lb://creditcard-service
           predicates:
-            - Path=/api/cards/**
+            - Path=/api/cards/**, /api/credit-cards/**
           filters:
             # Relays the access token to the downstream service, omit the clientRegistrationId to forward the OAuth2 access token of the currently authenticated user
             # Recommended: Remove the session cookie so downstream services only see the Bearer token
