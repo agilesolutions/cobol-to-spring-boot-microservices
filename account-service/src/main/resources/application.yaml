@@ -87,3 +87,9 @@ logging:
   level:
     com.agilesolutions: DEBUG
     org.springframework.security: INFO
+
+info:
+  app:
+    name: "Account Service"
+    description: "Manages customer accounts and profiles"
+    version: "1.0.0"

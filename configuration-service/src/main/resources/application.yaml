@@ -49,3 +49,9 @@ management:
 
 encrypt:
   key: "45D81EC1EF61DF9AD8D3E5BB397F9"
+
+info:
+  app:
+    name: "Configuration Service"
+    description: "Centralized configuration service for managing application properties across environments and services."
+    version: "1.0.0"

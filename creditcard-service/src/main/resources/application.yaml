@@ -69,3 +69,9 @@ springdoc:
 logging:
   level:
     com.agilesolutions.card: DEBUG
+
+info:
+  app:
+    name: "credit card service"
+    description: "credit card service for demo application"
+    version: "1.0.0"

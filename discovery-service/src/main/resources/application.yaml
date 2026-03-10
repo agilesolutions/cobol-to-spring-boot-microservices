@@ -27,3 +27,9 @@ spring:
 logging:
   level:
     root: INFO
+
+info:
+  app:
+    name: "Discovery Service"
+    description: "Service registry for the microservices architecture"
+    version: "1.0.0"

@@ -68,3 +68,9 @@ service:
 logging:
   level:
     root: INFO
+
+info:
+  app:
+    name: "Product Service"
+    description: "Service responsible for managing product information and providing product-related APIs."
+    version: "1.0.0"

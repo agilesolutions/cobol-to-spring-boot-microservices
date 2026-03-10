@@ -57,3 +57,9 @@ springdoc:
 logging:
   level:
     root: INFO
+
+info:
+  app:
+    name: "Cobol Legacy Mock Service"
+    description: "Mock service to simulate a Cobol legacy service for demo purposes"
+    version: "1.0.0"
