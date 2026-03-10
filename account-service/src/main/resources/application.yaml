@@ -85,7 +85,7 @@ management:
 
 logging:
   level:
-    com.agilesolutions: DEBUG
+    com.agilesolutions.account: DEBUG
     org.springframework.security: INFO
 
 info:

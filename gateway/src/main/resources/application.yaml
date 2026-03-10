@@ -7,7 +7,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
           lowerCaseServiceId: true
   security:
     oauth2:
@@ -28,9 +28,7 @@ management:
 
 logging:
   level:
-    com:
-      agilesolutions:
-        gateway: DEBUG
+    com.agilesolutions.gateway: DEBUG
 
 info:
   app:

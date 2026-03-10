@@ -55,6 +55,7 @@ Then I brought in Spring Cloud capabilities to implement method resiliency and r
 15. Implement feature flags with Spring Cloud Config to allow for the gradual rollout of new features in the new microservices. This can help to mitigate risks associated with deploying new features and allow for easier rollback if issues arise.
 16. Implement Spring Cloud Bus and RabbitMQ messaging capabilities to enable feature flags and configuration changes to be propagated across all instances of the new microservices in real-time. This ensures that all microservices are using the latest configuration and feature flag settings without needing to restart or redeploy them.
 17. Implement Spring Cloud Config Monitor triggered by GitHub Webhooks to automatically refresh the configuration of the new microservices when changes are made to the configuration repository. This can help to ensure that your microservices are always using the latest configuration settings and can respond quickly to changes in the environment or business needs.
+18. Implement Cross cutting concerns such as Tracing and Logging using Spring Cloud Gateway and Spring Cloud Sleuth to ensure that you have visibility into the interactions between the new microservices and the legacy system, as well as the performance and behavior of the new microservices in production.
 
 I took the sourcs from the following repositories:
 - [COBOL codebase](https://github.com/hpatel-appliedai/aws-mainframe-modernization-carddemo/tree/main/app/cbl)

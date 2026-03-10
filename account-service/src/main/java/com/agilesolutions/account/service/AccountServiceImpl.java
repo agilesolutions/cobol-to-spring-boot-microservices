@@ -85,8 +85,8 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     @Transactional(readOnly = true)
-    public AccountResponseDto getAccountById(String accountId) {
-        log.debug("Fetching account: {}", accountId);
+    public AccountResponseDto getAccountById(String accountId, String correlationId) {
+        log.debug("Fetching account: {}- service-correlation-id {}", accountId, correlationId);
 
         Account account = accountRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(

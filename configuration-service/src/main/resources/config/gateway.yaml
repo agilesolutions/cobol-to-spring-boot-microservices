@@ -18,7 +18,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
           lowerCaseServiceId: true
 
       routes:
@@ -37,7 +37,7 @@ spring:
             - RemoveRequestHeader=Cookie
             # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
             - AddRequestHeader=API-Version, 1.0+
-            # Forwards the original request path as a header, this can be used by downstream services to route to the correct controller or service implementation
+            # Strip the /legacy prefix before forwarding to downstream services, this can be used to run legacy and new microservices in parallel with different API versions
             - StripPrefix=1
 
         - id: legacy-creditcard-service-route
@@ -50,6 +50,7 @@ spring:
             - RemoveRequestHeader=Cookie
             # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
             - AddRequestHeader=API-Version, 1.0+
+            # Strip the /legacy prefix before forwarding to downstream services, this can be used to run legacy and new microservices in parallel with different API versions
             - StripPrefix=1
 
 
@@ -63,6 +64,7 @@ spring:
             - RemoveRequestHeader=Cookie
             # Baseline the API version for legacy services, this can be used by downstream services to route to the correct controller or service implementation
             - AddRequestHeader=API-Version, 1.0+
+            # Strip the /legacy prefix before forwarding to downstream services, this can be used to run legacy and new microservices in parallel with different API versions
             - StripPrefix=1
 
 

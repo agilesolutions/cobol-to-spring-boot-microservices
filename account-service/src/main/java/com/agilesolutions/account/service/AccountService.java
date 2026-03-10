@@ -8,7 +8,7 @@ public interface AccountService {
 
     AccountResponseDto createAccount(AccountRequestDto requestDto);
 
-    AccountResponseDto getAccountById(String accountId);
+    AccountResponseDto getAccountById(String accountId, String correlationId);
 
     AccountResponseDto updateAccount(String accountId, AccountUpdateDto updateDto);
 

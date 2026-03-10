@@ -56,11 +56,12 @@ public class AccountController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<ApiResponseDto<AccountResponseDto>> getLegacyAccount(
+            @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "11-digit account ID", example = "00001001001")
             @PathVariable String accountId) {
 
-        log.debug("GET /accounts/{}", accountId);
-        return legacyAccountClient.getAccount(accountId);
+        log.debug("GET /accounts/{} - service-correlation-id {}", accountId, correlationId);
+        return legacyAccountClient.getAccount(correlationId, accountId);
     }
 
     // ─── COBOL: GET-ACCT-DATA (READ) ────────────────────────────────────────
@@ -76,11 +77,12 @@ public class AccountController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<ApiResponseDto<AccountResponseDto>> getAccount(
+            @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "11-digit account ID", example = "00001001001")
             @PathVariable String accountId) {
 
-        log.debug("GET /accounts/{}", accountId);
-        AccountResponseDto response = accountService.getAccountById(accountId);
+        log.debug("GET /accounts/{} - service-correlation-id {}", accountId, correlationId);
+        AccountResponseDto response = accountService.getAccountById(accountId, correlationId);
         return ResponseEntity.ok(ApiResponseDto.success("Account retrieved", response));
     }
 

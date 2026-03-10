@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -43,10 +40,11 @@ public class AccountController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<ApiResponseDto<AccountResponseDto>> getAccount(
+            @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "11-digit account ID", example = "00001001001")
             @PathVariable String accountId) {
 
-        log.debug("GET /accounts/{}", accountId);
+        log.debug("GET /accounts/{} - service-correlation-id {}", accountId, correlationId);
         AccountResponseDto response = AccountResponseDto.builder()
                 .id(1L)
                 .accountId("00001001001")
