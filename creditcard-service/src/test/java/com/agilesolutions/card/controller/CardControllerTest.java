@@ -6,7 +6,7 @@ import com.agilesolutions.card.domain.dto.CardResponseDto;
 import com.agilesolutions.card.domain.enums.CardStatus;
 import com.agilesolutions.card.exception.BusinessValidationException;
 import com.agilesolutions.card.exception.GlobalExceptionHandler;
-import com.agilesolutions.card.rest.LegacyCardClient;
+import com.agilesolutions.card.rest.LegacyFeignCardClient;
 import com.agilesolutions.card.service.CardService;
 import com.agilesolutions.card.util.CardConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,7 +49,7 @@ class CardControllerTest {
     @MockitoBean
     private CardService cardService;
     @MockitoBean
-    private LegacyCardClient legacyCardClient;
+    private LegacyFeignCardClient legacyCardClient;
 
     private ObjectMapper objectMapper;
     private CardResponseDto sampleResponse;

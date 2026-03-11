@@ -2,7 +2,7 @@
 package com.agilesolutions.account.controller;
 
 import com.agilesolutions.account.domain.dto.*;
-import com.agilesolutions.account.rest.LegacyAccountClient;
+import com.agilesolutions.account.rest.LegacyFeignAccountClient;
 import com.agilesolutions.account.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,7 +42,7 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    private final LegacyAccountClient legacyAccountClient;
+    private final LegacyFeignAccountClient legacyAccountClient;
 
     @GetMapping(value = "/{accountId}", version = "1.0.0")
     @Operation(

@@ -1,7 +1,7 @@
 package com.agilesolutions.account.exception;
 
 import com.agilesolutions.account.controller.AccountController;
-import com.agilesolutions.account.rest.LegacyAccountClient;
+import com.agilesolutions.account.rest.LegacyFeignAccountClient;
 import com.agilesolutions.account.service.AccountService;
 import com.agilesolutions.account.util.AccountConstants;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +50,7 @@ class GlobalExceptionHandlerTest {
     private AccountService accountService;
 
     @MockitoBean
-    private LegacyAccountClient legacyAccountClient;
+    private LegacyFeignAccountClient legacyAccountClient;
 
     @Test
     @WithMockUser(roles = "USER")

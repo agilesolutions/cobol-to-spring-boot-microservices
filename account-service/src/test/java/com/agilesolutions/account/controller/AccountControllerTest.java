@@ -8,7 +8,7 @@ import com.agilesolutions.account.domain.dto.PagedResponseDto;
 import com.agilesolutions.account.domain.enums.AccountStatus;
 import com.agilesolutions.account.exception.AccountNotFoundException;
 import com.agilesolutions.account.exception.GlobalExceptionHandler;
-import com.agilesolutions.account.rest.LegacyAccountClient;
+import com.agilesolutions.account.rest.LegacyFeignAccountClient;
 import com.agilesolutions.account.service.AccountService;
 import com.agilesolutions.account.util.AccountConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,7 +45,7 @@ class AccountControllerTest {
     private AccountService accountService;
 
     @MockitoBean
-    private LegacyAccountClient legacyAccountClient;
+    private LegacyFeignAccountClient legacyAccountClient;
 
     private ObjectMapper objectMapper;
     private AccountResponseDto sampleResponse;

@@ -2,7 +2,7 @@
 package com.agilesolutions.card.controller;
 
 import com.agilesolutions.card.domain.dto.*;
-import com.agilesolutions.card.rest.LegacyCardClient;
+import com.agilesolutions.card.rest.LegacyFeignCardClient;
 import com.agilesolutions.card.service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class CardController {
 
     private final CardService cardService;
 
-    private final LegacyCardClient legacyCardClient;
+    private final LegacyFeignCardClient legacyCardClient;
 
 
     // ─── COBOL: GET-CARD-DATA / READ CARDDAT KEY = CARD-NUM ──────────────────
