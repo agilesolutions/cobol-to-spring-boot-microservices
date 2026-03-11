@@ -17,6 +17,11 @@ spring:
     apiversion:
       use:
         header: API-Version
+  cloud:
+    bus:
+      openfeign:
+        circuitbreaker:
+          enabled: true
   datasource:
     url: jdbc:h2:mem:testdb;SCHEMA=public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;DATABASE_TO_LOWER=TRUE
     username: sa
@@ -46,6 +51,15 @@ spring:
   sql:
     init:
       mode: never   # disable schema.sql/data.sql when using Flyway
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
+
 
 eureka:
   instance:

@@ -55,6 +55,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // This allows downstream services to apply method-level security annotations like @PreAuthorize
