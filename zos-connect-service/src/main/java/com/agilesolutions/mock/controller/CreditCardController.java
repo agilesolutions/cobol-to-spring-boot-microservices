@@ -14,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.resilience.annotation.Retryable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -45,11 +42,12 @@ public class CreditCardController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<ApiResponseDto<CardResponseDto>> getCard(
+            @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "16-digit card number",
                     example = "4000200030004000")
             @PathVariable String cardNum) {
 
-        log.debug("GET /cards/{}", cardNum);
+        log.debug("GET /cards/{} - service-correlation-id {}", cardNum, correlationId);
         CardResponseDto response = CardResponseDto.builder()
                 .id(1L)
                 .cardNum("4000200030004001")

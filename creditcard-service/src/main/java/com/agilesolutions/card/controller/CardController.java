@@ -60,12 +60,13 @@ public class CardController {
             @ApiResponse(responseCode = "404", description = "Card not found (FILE STATUS '23')")
     })
     public ResponseEntity<ApiResponseDto<CardResponseDto>> getLegacyCard(
+            @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "16-digit card number",
                     example = "4000200030004000")
             @PathVariable String cardNum) {
 
-        log.debug("GET /cards/{}", cardNum);
-        return legacyCardClient.getCard(cardNum);
+        log.debug("GET /cards/{} - service-correlation-id {}", cardNum, correlationId);
+        return legacyCardClient.getCard(cardNum, correlationId);
     }
 
     @GetMapping(value = "/{cardNum}", version = "2.0.0")
