@@ -25,12 +25,6 @@ spring:
     port: 5672
     username: "guest"
     password: "guest"
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8092
-
 
 eureka:
   instance:

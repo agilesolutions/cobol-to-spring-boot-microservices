@@ -125,3 +125,30 @@ To implement method resiliency and retry mechanisms on new Spring Boot microserv
 - **Bulkhead**: This pattern allows you to isolate different parts of your microservices to prevent failures in one part from affecting the entire system. This can help to improve the overall resilience of your microservices by containing failures and allowing other parts of the system to continue functioning.
 - **Fallback**: This pattern allows you to provide a fallback response when an external service call fails. This can help to maintain a good user experience even when there are issues with external services.
 - **Timeouts**: This pattern allows you to set timeouts for calls to external services. This can help to prevent your microservices from waiting indefinitely for a response from an external service that may be experiencing issues.
+
+## Spring Oauth 2.0 and OpenID Connect Edge Spring Cloud Gateway Resource Server
+To secure the Java REST API Gateway and the new microservices, I implemented Spring Security with OAuth 2.0 and OpenID Connect. This allows you to authenticate and authorize requests to the API Gateway and ensure that only authorized users can access the microservices.
+- **OAuth 2.0**: This is an authorization framework that allows you to grant access to resources on behalf of a user. You can use OAuth 2.0 to secure your API Gateway and microservices by requiring clients to obtain an access token before making requests.
+- **OpenID Connect**: This is an authentication layer built on top of OAuth 2.0 that allows you to verify the identity of users and obtain their profile information. You can use OpenID Connect to authenticate users and secure access to your API Gateway and microservices.
+- **Spring Security**: This is a powerful and customizable authentication and access control framework for Java applications. You can use Spring Security to implement OAuth 2.0 and OpenID Connect in your API Gateway and microservices, providing robust security features such as token validation, user authentication, and authorization.
+- **Edge Spring Cloud Gateway Resource Server**: This is a component of Spring Cloud Gateway that allows you to secure your API Gateway by acting as a resource server. It can validate incoming access tokens and ensure that only authorized requests are allowed to access the microservices behind the gateway.
+- By implementing these security features, you can ensure that your API Gateway and microservices are protected from unauthorized access and that only authenticated and authorized users can interact with your system. This is crucial for maintaining the security and integrity of your application, especially when dealing with sensitive data or critical business functionalities.
+```
+Client
+  |
+  |  Bearer JWT
+  v
++------------------------+
+| Spring Cloud Gateway   |
+| OAuth2 Resource Server |
+| JWT Validation         |
++-----------+------------+
+            |
+            | Forward authenticated request
+            v
++------------------------+
+| Downstream Service     |
+| Spring Boot API        |
+| Method RBAC            |
++------------------------+
+```

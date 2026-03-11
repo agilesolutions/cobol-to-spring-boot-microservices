@@ -45,7 +45,6 @@ public class AccountController {
     private final LegacyAccountClient legacyAccountClient;
 
     @GetMapping(value = "/{accountId}", version = "1.0.0")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(
             summary     = "Get account by ID",
             description = "Call COBOL GET-ACCT-DATA / READ ACCTDAT paragraph through gateway service (version 1.0.0 for backward compatibility with legacy clients)"
@@ -55,6 +54,7 @@ public class AccountController {
             @ApiResponse(responseCode = "404", description = "Account not found (COBOL NOT-FOUND path)"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<ApiResponseDto<AccountResponseDto>> getLegacyAccount(
             @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "11-digit account ID", example = "00001001001")

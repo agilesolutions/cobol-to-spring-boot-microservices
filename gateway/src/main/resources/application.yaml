@@ -5,10 +5,15 @@ spring:
     import: "optional:configserver:http://localhost:8091/"
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: false
-          lowerCaseServiceId: true
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+              lowerCaseServiceId: true
+          httpclient:
+            connect-timeout: 1000
+            response-timeout: 10s
   security:
     oauth2:
       resourceserver:

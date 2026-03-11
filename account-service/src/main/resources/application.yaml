@@ -47,12 +47,6 @@ spring:
     init:
       mode: never   # disable schema.sql/data.sql when using Flyway
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8092
-
 eureka:
   instance:
     preferIpAddress: true

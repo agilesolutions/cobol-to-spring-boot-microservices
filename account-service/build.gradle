@@ -56,10 +56,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-
-    // Each downstream service must be configured as an OAuth2 Resource Server.
-    // This allows them to accept the Bearer token relayed by the gateway, validate its signature, and extract user authorities
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    // This allows downstream services to apply method-level security annotations like @PreAuthorize
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // Database
     implementation 'org.flywaydb:flyway-core'
