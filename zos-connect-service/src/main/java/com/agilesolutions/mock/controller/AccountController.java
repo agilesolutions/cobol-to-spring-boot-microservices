@@ -3,6 +3,7 @@ package com.agilesolutions.mock.controller;
 import com.agilesolutions.mock.domain.dto.AccountResponseDto;
 import com.agilesolutions.mock.domain.dto.ApiResponseDto;
 import com.agilesolutions.mock.domain.enums.AccountStatus;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,6 +40,7 @@ public class AccountController {
             @ApiResponse(responseCode = "404", description = "Account not found (COBOL NOT-FOUND path)"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
+    @RateLimiter(name= "getAccount", fallbackMethod = "getAccountFallback")
     public ResponseEntity<ApiResponseDto<AccountResponseDto>> getAccount(
             @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "11-digit account ID", example = "00001001001")
@@ -61,5 +63,16 @@ public class AccountController {
 
         return ResponseEntity.ok(ApiResponseDto.success("Account retrieved", response));
     }
+
+    public ResponseEntity<ApiResponseDto<AccountResponseDto>> getAccountFallback(
+            @RequestHeader("service-correlation-id") String correlationId,
+            @PathVariable String accountId) {
+
+        log.debug("GET /accounts/{} RateLimitor fallback - service-correlation-id {}", accountId, correlationId);
+        AccountResponseDto response = AccountResponseDto.builder().build();
+
+        return ResponseEntity.ok(ApiResponseDto.success("Account fall back produced", response));
+    }
+
 
 }

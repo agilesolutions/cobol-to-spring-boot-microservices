@@ -3,6 +3,7 @@ package com.agilesolutions.mock.controller;
 import com.agilesolutions.mock.domain.dto.ApiResponseDto;
 import com.agilesolutions.mock.domain.dto.CardResponseDto;
 import com.agilesolutions.mock.domain.enums.CardStatus;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -41,6 +42,7 @@ public class CreditCardController {
             @ApiResponse(responseCode = "404", description = "Card not found (COBOL NOT-FOUND path)"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
+    @RateLimiter(name= "getCard", fallbackMethod = "getCardFallback")
     public ResponseEntity<ApiResponseDto<CardResponseDto>> getCard(
             @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "16-digit card number",
@@ -73,5 +75,16 @@ public class CreditCardController {
 
         return ResponseEntity.ok(ApiResponseDto.success("Credit Card retrieved", response));
     }
+
+    public ResponseEntity<ApiResponseDto<CardResponseDto>> getCardFallback(
+            @RequestHeader("service-correlation-id") String correlationId,
+            @PathVariable String cardNum) {
+
+        log.debug("GET /cards/{} RateLimitor fallback - service-correlation-id {}", cardNum, correlationId);
+        CardResponseDto response = CardResponseDto.builder().build();
+
+        return ResponseEntity.ok(ApiResponseDto.success("Credit Card fall back produced", response));
+    }
+
 
 }

@@ -35,6 +35,13 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitRefreshPeriod: 5000
+      limitForPeriod: 1
+
 springdoc:
   #  enable-spring-security: true
   #  show-login-endpoint: true
