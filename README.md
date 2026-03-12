@@ -99,7 +99,7 @@ Clients (Web/Mobile)
 
 
 ## Testing
-To test the microservices, use Bruno or curl to send HTTP requests to the Java REST API Gateway and verify that the responses are correct.
+To test the microservices, use Bruno (**[The Git-native API client](https://www.usebruno.com/)**) or curl to send HTTP requests to the Java REST API Gateway and verify that the responses are correct.
 
 ## Spring Framework 7 API Versioning to Gate Routing services
 To implement API versioning in the Java REST API Gateway, you can use Spring Framework 7's support for API versioning. This allows you to route requests to different versions of your microservices based on the API version specified in the request.

@@ -59,6 +59,9 @@ resilience4j.circuitbreaker:
       permittedNumberOfCallsInHalfOpenState: 2
       failureRateThreshold: 50
       waitDurationInOpenState: 10000
+      ignoredExceptions:
+        - java.net.SocketTimeoutException
+        - NullPointerException
 
 eureka:
   instance:
