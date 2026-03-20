@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: otel-lgtm
+  namespace: observability
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: otel-lgtm-read
+  namespace: observability
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - services
+      - endpoints
+      - namespaces
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: otel-lgtm-read-binding
+  namespace: observability
+subjects:
+  - kind: ServiceAccount
+    name: otel-lgtm
+roleRef:
+  kind: Role
+  name: otel-lgtm-read
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: otel-lgtm-cluster-read
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - nodes
+      - namespaces
+      - services
+      - endpoints
+    verbs: ["get", "list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: otel-lgtm-cluster-read-binding
+subjects:
+  - kind: ServiceAccount
+    name: otel-lgtm
+    namespace: observability
+roleRef:
+  kind: ClusterRole
+  name: otel-lgtm-cluster-read
+  apiGroup: rbac.authorization.k8s.io
