@@ -28,7 +28,7 @@ flux create kustomization gateway --target-namespace=services --source=spring-gr
 ```
 3. How to create initial FluxCD configuration to deploy Prometheus and Grafana for monitoring:
 ```bash
-flux create kustomization metrics --target-namespace=monitoring --source=cobol-to-microservices --path="./kustomize/base" --prune=true --wait=true --interval=30m --retry-interval=2m --health-check-timeout=3m --export > ./fluxCD/metrics-kustomization.yaml
+flux create kustomization metrics --target-namespace=monitoring --source=cobol-to-microservices --path="./kustomize/base" --prune=true --wait=true --interval=30m --retry-interval=2m --health-check-timeout=3m --export > ./fluxCD/observability-kustomization.yaml
 ```
 4. Navigate to the project directory and build each individual service like here under and setup FluxCD
 ```bash

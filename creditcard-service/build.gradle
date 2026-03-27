@@ -56,6 +56,11 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // Spring Boot 4 OpenTelemetry for distributed tracing and metrics
+    implementation 'org.springframework.boot:spring-boot-starter-opentelemetry'
+    testImplementation 'org.springframework.boot:spring-boot-starter-opentelemetry-test'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:2.21.0-alpha'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:3.3.5'
 
     // This allows downstream services to apply method-level security annotations like @PreAuthorize
     implementation 'org.springframework.boot:spring-boot-starter-security'

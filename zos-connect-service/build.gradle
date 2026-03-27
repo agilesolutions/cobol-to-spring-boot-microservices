@@ -52,6 +52,12 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // Spring Boot 4 OpenTelemetry for distributed tracing and metrics
+    implementation 'org.springframework.boot:spring-boot-starter-opentelemetry'
+    testImplementation 'org.springframework.boot:spring-boot-starter-opentelemetry-test'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:2.21.0-alpha'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:3.3.5'
+
     // swagger ui for testing
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.8.9")

@@ -4,6 +4,7 @@ package com.agilesolutions.account.controller;
 import com.agilesolutions.account.domain.dto.*;
 import com.agilesolutions.account.rest.LegacyFeignAccountClient;
 import com.agilesolutions.account.service.AccountService;
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,6 +56,7 @@ public class AccountController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @Observed(name = "getLegacyAccount.counter", contextualName = "getLegacyAccountEndpoint")
     public ResponseEntity<ApiResponseDto<AccountResponseDto>> getLegacyAccount(
             @RequestHeader("service-correlation-id") String correlationId,
             @Parameter(description = "11-digit account ID", example = "00001001001")

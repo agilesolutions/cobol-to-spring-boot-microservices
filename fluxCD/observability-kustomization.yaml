@@ -12,6 +12,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: cobol-to-microservices
-  targetNamespace: monitoring
+  targetNamespace: observability
   timeout: 3m0s
   wait: true

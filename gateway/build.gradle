@@ -55,6 +55,9 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // Booting up LGTM Grafana labs observability stack with Docker Compose is a great way to quickly set up a monitoring and observability environment for your applications. The 'spring-boot-docker-compose' dependency allows you to easily integrate Docker Compose into your Spring Boot application, making it easier to manage and orchestrate your services in a containerized environment. This can be especially useful for testing and development purposes, as it allows you to spin up the entire stack with a single command and ensures that all components are properly configured and connected.
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
     // set up gateway as an OAuth2 client to extract the OAuth2 access token from the currently
     // authenticated user and adds it as a Bearer token to the downstream request on downstream service calls.
     // This allows the downstream services to validate the token and extract user authorities for authorization decisions.
