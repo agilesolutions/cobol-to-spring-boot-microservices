@@ -15,26 +15,26 @@ management:
   otlp:
     metrics:
       export:
-        url: http://localhost:4318/v1/metrics
+        url: http://${LGTM_SERVICE_URL}:4318/v1/metrics
   opentelemetry:
     tracing:
       export:
         otlp:
-          endpoint: http://localhost:4318/v1/traces
+          endpoint: http://${LGTM_SERVICE_URL}:4318/v1/traces
     logging:
       export:
         otlp:
-          endpoint: http://localhost:4318/v1/logs
+          endpoint: http://${LGTM_SERVICE_URL}:4318/v1/logs
 
 
 spring:
   application:
     name: product-service
   config:
-    import: "optional:configserver:http://localhost:8091/"
+    import: ${SPRING_CONFIG_IMPORT}
   # Spring Bus for RabbitMQ to refresh configuration across services
   rabbitmq:
-    host: "localhost"
+    host: ${RABBITMQ_SERVICE_URL}
     port: 5672
     username: "guest"
     password: "guest"
@@ -49,7 +49,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
 
 springdoc:
   #  enable-spring-security: true

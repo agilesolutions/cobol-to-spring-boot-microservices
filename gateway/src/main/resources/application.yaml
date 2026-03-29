@@ -1,8 +1,8 @@
 spring:
   application:
-    name: gateway-service
+    name: ${GATEWAY_APPLICATION_NAME}
   config:
-    import: "optional:configserver:http://localhost:8091/"
+    import: ${SPRING_CONFIG_IMPORT}
   cloud:
     gateway:
       server:
@@ -18,12 +18,22 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8092
+          issuer-uri: ${AUTHORIZATION_SERVICE_URL}
   data:
     redis:
-      host: localhost
+      host: ${REDIS_HOST}
       port: 6379
       timeout: 2000
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+
 
 management:
   endpoints:

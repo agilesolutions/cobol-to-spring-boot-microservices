@@ -5,11 +5,16 @@ metadata:
   namespace: services
 data:
   SPRING_PROFILES_ACTIVE: "prod"
-  SPRING_CONFIG_IMPORT: "configserver:http://configuration-service:9091/"
-  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8761/eureka/"
+  SPRING_CONFIG_IMPORT: "configserver:http://configuration-service.services.svc.cluster.local:9091/"
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service.services.svc.cluster.local:8761/eureka/"
   CONFIGURATION_SERVICE_APPLICATION_NAME: "configserver_service"
   DISCOVERY_SERVICE_APPLICATION_NAME: "discovery-service"
+  LGTM_SERVICE_URL: "http://otel-lgtm.observability.svc.cluster.local"
+  AUTHORIZATION_SERVICE_URL: "http://authorization-service.services.svc.cluster.local:8092"
+  RABBITMQ_SERVICE_URL: "rabbitmq.messaging.svc.cluster.local"
   ACCOUNT_SERVICE_APPLICATION_NAME: "account-service"
   PRODUCT_SERVICE_APPLICATION_NAME: "product-service"
   CREDIT_CARD_SERVICE_APPLICATION_NAME: "credit_card_service"
+  ZOS_CONNECT_SERVICE_APPLICATION_NAME: "zos-connect-service"
   GATEWAY_APPLICATION_NAME: "gatewayserver"
+

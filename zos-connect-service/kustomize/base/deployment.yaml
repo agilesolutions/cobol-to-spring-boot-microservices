@@ -20,3 +20,34 @@ spec:
           image: agilesolutions/zos-connect-service:1.0.1
           ports:
             - containerPort: 8082
+          env:
+            - name: ZOS_SERVICE_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: ZOS_SERVICE_APPLICATION_NAME
+            - name: SPRING_CONFIG_IMPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: SPRING_CONFIG_IMPORT
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: LGTM_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: LGTM_SERVICE_URL
+            - name: RABBITMQ_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: RABBITMQ_SERVICE_URL
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                    name: services-configmap
+                    key: REDIS_HOST
