@@ -34,9 +34,11 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Compiling, build and package..."
-    - cd customer-service
+    - cd creditcard-service
     - gradle bootJar
     - cd ../account-service
+    - gradle bootJar
+    - cd ../product-service
     - gradle bootJar
     - cd ../gateway
     - gradle bootJar
@@ -44,19 +46,22 @@ build-job:       # This job runs in the build stage, which runs first.
   artifacts:
     name: "application.jar"
     paths:
-      - customer-service/build/libs/
+      - creditcard-service/build/libs/
       - account-service/build/libs/
+      - product-service/build/libs/
       - gateway/build/libs/
 
 unit-tests:   # This job runs in the test stage.
   stage: test
   script:
     - echo "Running unit tests... "
-    - cd $CI_PROJECT_DIR/customer-service
+    - cd $CI_PROJECT_DIR/creditcard-service
     - gradle test
     - cd $CI_PROJECT_DIR/account-service
     - gradle test
     - cd $CI_PROJECT_DIR/gateway
+    - gradle test
+    - cd $CI_PROJECT_DIR/product-service
     - gradle test
 
 #integration-tests:   # This job runs in the test stage.
@@ -80,8 +85,9 @@ docker-build:
   services:
     - docker:dind
   script:
-    - docker build -t $CI_REGISTRY_IMAGE/customer-service:$CI_COMMIT_SHORT_SHA ./customer-service
+    - docker build -t $CI_REGISTRY_IMAGE/credit-service:$CI_COMMIT_SHORT_SHA ./credit-service
     - docker build -t $CI_REGISTRY_IMAGE/account-service:$CI_COMMIT_SHORT_SHA ./account-service
+    - docker build -t $CI_REGISTRY_IMAGE/product-service:$CI_COMMIT_SHORT_SHA ./product-service
     - docker build -t $CI_REGISTRY_IMAGE/gateway:$CI_COMMIT_SHORT_SHA ./gateway
 #    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
 #    - docker login registry.gitlab.com
@@ -99,8 +105,9 @@ deploy-kubectl:      # This job runs in the deploy stage.
     - kubectl version --client
   script:
     - echo "Now you can use kubectl commands you want"
-    - cd customer-service/${KUSTOMIZE_DIR} && kustomize edit set image customer-service=customer-service:$CI_COMMIT_SHORT_SHA && kustomize build .
+    - cd creditcard-service/${KUSTOMIZE_DIR} && kustomize edit set image creditcard-service=creditcard-service:$CI_COMMIT_SHORT_SHA && kustomize build .
     - cd $CI_PROJECT_DIR/account-service/${KUSTOMIZE_DIR} && kustomize edit set image account-service=account-service:$CI_COMMIT_SHORT_SHA && kustomize build .
+    - cd $CI_PROJECT_DIR/product-service/${KUSTOMIZE_DIR} && kustomize edit set image product-service=product-service:$CI_COMMIT_SHORT_SHA && kustomize build .
     - cd $CI_PROJECT_DIR/gateway/${KUSTOMIZE_DIR} && kustomize edit set image gateway=gateway:$CI_COMMIT_SHORT_SHA && kustomize build .
 #    - kustomize build . | kubectl apply -f -
 #    - kubectl config get-contexts
