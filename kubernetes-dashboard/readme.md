@@ -9,11 +9,11 @@ kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin
 # Get the Bearer Token
 kubectl create token dashboard-admin-sa
 kubectl create secret generic dashboard-admin-sa-token --type=kubernetes.io/service-account-token --from-literal=token=$(kubectl create token dashboard-admin-sa)
-# Access the Dashboard
+## Access the Dashboard
 kubectl proxy
-# Open the following URL in your web browser:
+## Open the following URL in your web browser:
 http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#!/login
-# Declaratively create secret with the token
+## Declaratively create secret with the token
 ```
 apiVersion: v1
 kind: Secret
@@ -23,14 +23,16 @@ metadata:
     kubernetes.io/service-account.name: dashboard-admin-sa
 type: kubernetes.io/service-account-token
 ```
-# Apply the secret
+## Apply the secret
 kubectl apply -f dashboard-admin-sa-token.yaml
-# Get the token from the secret
+## Get the token from the secret
 kubectl get secret dashboard-admin-sa-token -o jsonpath="{.data.token}" | base64 --decode
-# logs for the dashboard
+## logs for the dashboard
 kubectl logs -n kubernetes-dashboard -l k8s-app=kubernetes-dashboard -- tail=100
 kubectl logs -n kubernetes-dashboard deployment/kubernetes-dashboard
-# Disable login ui
+## Disable login ui
 kubectl patch deployment kubernetes-dashboard -n kubernetes-dashboard --patch-file patch.yaml
-# restart
+## enable admin view
+k apply -f rbac.yaml
+## restart
 kubectl rollout restart deployment kubernetes-dashboard -n kubernetes-dashboard
