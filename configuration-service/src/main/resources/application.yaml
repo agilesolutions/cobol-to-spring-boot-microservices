@@ -2,7 +2,7 @@ server:
   port: 8091
 spring:
   application:
-    name: "configuration-service"
+    name: ${CONFIGURATION_SERVICE_APPLICATION_NAME}
   profiles:
     active: native
     # active: git
@@ -18,7 +18,7 @@ spring:
         #   clone-on-start: true
         #   force-pull: true
   rabbitmq:
-    host: "localhost"
+    host: ${RABBITMQ_SERVICE_URL}
     port: 5672
     username: "guest"
     password: "guest"
@@ -30,7 +30,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
 
 management:
   endpoints:

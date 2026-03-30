@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.agilesolutions'
-version = '1.0.1'
+version = '1.0.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -145,11 +145,11 @@ bootJar {
 }
 
 task dockerBuild(type: Exec) {
-    commandLine 'docker', 'build', '-t', "agilesolutions/gateway:${version}", '.'
+    commandLine 'docker', 'build', '-t', "agilesolutions/product-service:${version}", '.'
 }
 
 task dockerPush(type: Exec) {
-    commandLine 'docker', 'push', "agilesolutions/gateway:${version}"
+    commandLine 'docker', 'push', "agilesolutions/product-service:${version}"
 }
 
 task release(type: GradleBuild) {

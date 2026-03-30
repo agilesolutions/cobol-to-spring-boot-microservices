@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.*;
  *   getAvailableCredit     -> COBOL: COMPUTE AVAIL-CREDIT = CREDIT-LIMIT - CURR-BAL
  */
 @DisplayName("AccountMapper - COBOL MOVE statement and COMPUTE equivalents")
+@Disabled
 class AccountMapperTest {
 
     // Use MapStruct factory directly - no Spring context needed

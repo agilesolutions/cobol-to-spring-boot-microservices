@@ -10,6 +10,6 @@ spec:
     app: zos-connect-service
   ports:
     - name: http
-      port: 8083
-      targetPort: 8083
+      port: 8084
+      targetPort: 8084
   type: ClusterIP  # internal-only, exposed via Ingress

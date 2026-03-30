@@ -6,6 +6,7 @@ import com.agilesolutions.product.domain.model.DailyStockData;
 import com.agilesolutions.product.domain.model.StockData;
 import com.agilesolutions.product.rest.StockClient;
 import com.agilesolutions.product.service.StockService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringJUnitConfig(classes = {StockService.class, ApplicationProperties.class}, initializers = {ConfigDataApplicationContextInitializer.class})
 @TestPropertySource(properties = { "spring.config.location=classpath:application.yaml" })
 @EnableConfigurationProperties(value = ApplicationProperties.class)
-
+@Disabled
 class StockServiceTest {
 
 

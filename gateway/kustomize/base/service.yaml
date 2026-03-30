@@ -10,6 +10,6 @@ spec:
     app: gateway
   ports:
     - name: http
-      port: 8082
-      targetPort: 8082
+      port: 8080
+      targetPort: 8080
   type: ClusterIP  # internal-only, exposed via Ingress

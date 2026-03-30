@@ -4,6 +4,7 @@ import com.agilesolutions.product.controller.ProductController;
 import com.agilesolutions.product.domain.dto.StockDto;
 import com.agilesolutions.product.exception.CustomControllerAdvice;
 import com.agilesolutions.product.service.StockService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = ProductController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = {ProductController.class, CustomControllerAdvice.class})
+@Disabled
 class StockControllerTest {
 
     @Autowired

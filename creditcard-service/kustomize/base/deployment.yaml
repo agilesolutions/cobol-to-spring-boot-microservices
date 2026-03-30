@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: creditcard-service
-          image: agilesolutions/creditcard-service:1.0.1
+          image: agilesolutions/creditcard-service:1.0.0
           ports:
             - containerPort: 8081
           env:

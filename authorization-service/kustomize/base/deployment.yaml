@@ -17,6 +17,17 @@ spec:
     spec:
       containers:
         - name: authorization-service
-          image: agilesolutions/authorization-service:1.0.1
+          image: agilesolutions/authorization-service:1.0.0
           ports:
             - containerPort: 8092
+          env:
+            - name: AUHORIZATION_SERVICE_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: AUHORIZATION_SERVICE_APPLICATION_NAME
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE

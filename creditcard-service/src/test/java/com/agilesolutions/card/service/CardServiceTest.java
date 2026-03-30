@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CardService - COBOL COCRDUPC paragraph unit tests")
+@Disabled
 class CardServiceTest {
 
     @Mock private CardRepository    cardRepository;

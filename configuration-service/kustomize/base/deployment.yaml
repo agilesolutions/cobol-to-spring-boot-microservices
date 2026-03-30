@@ -17,6 +17,22 @@ spec:
     spec:
       containers:
         - name: configuration-service
-          image: agilesolutions/configuration-service:1.0.1
+          image: agilesolutions/configuration-service:1.0.0
           ports:
             - containerPort: 8091
+          env:
+            - name: CONFIGURATION_SERVICE_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: CONFIGURATION_SERVICE_APPLICATION_NAME
+            - name: RABBITMQ_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: RABBITMQ_SERVICE_URL
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: services-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
