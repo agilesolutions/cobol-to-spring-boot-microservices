@@ -1,4 +1,4 @@
-FROM amazoncorretto:21-alpine-jdk
+FROM amazoncorretto:25-alpine-jdk
 VOLUME /tmp
 ARG JAR_FILE=build/libs/application.jar
 COPY ${JAR_FILE} app.jar
