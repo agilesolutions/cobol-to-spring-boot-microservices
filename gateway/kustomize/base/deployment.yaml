@@ -36,11 +36,6 @@ spec:
                 configMapKeyRef:
                   name: services-configmap
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: services-configmap
-                  key: REDIS_HOST
             - name: AUTHORIZATION_SERVICE_URL
               valueFrom:
                 configMapKeyRef:

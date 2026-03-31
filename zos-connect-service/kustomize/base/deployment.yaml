@@ -46,8 +46,3 @@ spec:
                 configMapKeyRef:
                   name: services-configmap
                   key: RABBITMQ_SERVICE_URL
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                    name: services-configmap
-                    key: REDIS_HOST

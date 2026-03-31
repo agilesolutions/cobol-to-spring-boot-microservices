@@ -22,11 +22,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${AUTHORIZATION_SERVICE_URL}
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: 6379
-      timeout: 2000
 
 eureka:
   instance:
