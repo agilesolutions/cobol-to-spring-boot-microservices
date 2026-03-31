@@ -8,5 +8,5 @@ spec:
   ports:
     - name: http
       port: 8092
-      nodePort: 30092
+      nodePort: 30095
       targetPort: 8092
