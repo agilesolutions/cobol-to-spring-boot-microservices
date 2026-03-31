@@ -4,9 +4,8 @@ metadata:
   name: configuration-service
   namespace: services
 spec:
-  type: NodePort
+  type: ClusterIP  # internal-only, exposed via Ingress
   ports:
     - name: http
       port: 8091
-      nodePort: 30091
       targetPort: 8091
