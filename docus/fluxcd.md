@@ -50,7 +50,7 @@ flux get kustomizations
 ## Monitoring and Troubleshooting
 - Use FluxCD logs to monitor the synchronization process and identify any issues:
 ```bash
-kubectl logs -f -n flux-system deployment/kustomization-controller
+kubectl logs -f -n flux-system deployment/kustomize-controller
 ```
 - Check the status of your application and services using kubectl:
 ```bash
