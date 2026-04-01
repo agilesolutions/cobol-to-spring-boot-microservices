@@ -22,7 +22,7 @@ spring:
   application:
     name: discovery-service
   config:
-    import: "optional:configserver:http://localhost:8091/"
+    import: "optional:configserver:http://configuration-service.services.svc.cluster.local:8091/"
 
 logging:
   level:
