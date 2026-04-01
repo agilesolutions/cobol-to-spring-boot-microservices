@@ -30,4 +30,4 @@ services:
     alias: docker
 
 include:
-  - ".account-service/ci/build-service.yml"
+  - 'account-service/ci/build-service.yml'
