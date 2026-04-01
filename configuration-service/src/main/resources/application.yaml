@@ -3,8 +3,12 @@ server:
 spring:
   application:
     name: ${CONFIGURATION_SERVICE_APPLICATION_NAME}
-  profiles:
-    active: native
+  # Spring Bus for RabbitMQ to refresh configuration across services
+  rabbitmq:
+    host: ${RABBITMQ_SERVICE_URL}
+    port: 5672
+    username: "guest"
+    password: "guest"
     # active: git
   cloud:
     config:
@@ -17,15 +21,6 @@ spring:
         #   timeout: 5
         #   clone-on-start: true
         #   force-pull: true
-
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
 
 management:
   endpoints:
