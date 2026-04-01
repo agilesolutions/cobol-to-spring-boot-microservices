@@ -14,7 +14,8 @@ build and package service:       # This job runs in the build stage, which runs 
   artifacts:
     name: "application.jar"
     paths:
-      - build/libs/
+      - $WORK_DIR/build/libs/*.jar
+    expire_in: 1 hour
 
 unit-tests:   # This job runs in the test stage.
   stage: test
