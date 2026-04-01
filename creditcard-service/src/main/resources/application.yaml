@@ -1,6 +1,5 @@
 server:
   port: 8081
-
 spring:
   application:
     name: ${CREDIT_CARD_SERVICE_APPLICATION_NAME}
