@@ -31,3 +31,6 @@ services:
 
 include:
   - 'account-service/ci/build-service.yml'
+  - 'creditcard-service/ci/build-service.yml'
+  - 'product-service/ci/build-service.yml'
+  - 'zos-connect-service/ci/build-service.yml'

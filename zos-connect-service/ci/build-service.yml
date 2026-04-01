@@ -1,0 +1,83 @@
+variables:
+  WORK_DIR: "zos-connect-service"
+
+
+build and package service:       # This job runs in the build stage, which runs first.
+  image: gradle:9.1.0-jdk-25-and-25
+  stage: build
+  script:
+    - echo "Compiling, build and package..."
+    - cd $WORK_DIR
+    - gradle bootJar
+    - echo "Build."
+  artifacts:
+    name: "application.jar"
+    paths:
+      - $WORK_DIR/build/libs/*.jar
+    expire_in: 1 hour
+
+unit-tests:   # This job runs in the test stage.
+  image: gradle:9.1.0-jdk-25-and-25
+  stage: test
+  script:
+    - echo "Running unit tests... "
+    - cd $WORK_DIR
+    - gradle test
+
+    #integration-tests:   # This job runs in the test stage.
+    #  stage: test
+    #  variables:
+    #    DOCKER_HOST: tcp://docker:2375
+    # Use the overlay fs driver for improved performance:
+#    DOCKER_DRIVER: overlay2
+#    DOCKER_TLS_CERTDIR: ""
+#    TESTCONTAINERS_RYUK_DISABLED: "true" # Optional, speeds up CI
+#    TESTCONTAINERS_CHECKS_DISABLE: "true" # Optional, skips some startup checks
+#    GRADLE_USER_HOME: "$CI_PROJECT_DIR/account-service/.gradle"
+#  script:
+#    - echo "Running integration tests..."
+#    - cd $CI_PROJECT_DIR/account-service
+#    - gradle integrationTest
+
+docker-build:
+  stage: docker
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Building Docker image..."
+    - cd $WORK_DIR
+    - echo "Using Dockerfile in $WORK_DIR/Dockerfile"
+    - docker build -t $CI_REGISTRY_IMAGE/account-service:$CI_COMMIT_SHORT_SHA .
+#    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
+#    - docker login registry.gitlab.com
+#    - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+#  only:
+#    - master
+
+deploy-kubectl:      # This job runs in the deploy stage.
+  #  environment: production
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  image: line/kubectl-kustomize:latest
+  before_script:
+    # Decode and configure kubeconfig
+    #  - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+    - kubectl version --client
+  script:
+    - echo "Now you can use kubectl commands you want"
+    - cd ${KUSTOMIZE_DIR} && kustomize edit set image account-service=account-service:$CI_COMMIT_SHORT_SHA && kustomize build .
+#    - kustomize build . | kubectl apply -f -
+#    - kubectl config get-contexts
+#    - kubectl config use-context $(kubectl config current-context)
+#  only:
+#    - master
+
+# Alternative HELM deployment
+deploy-helm:
+  image: dtzar/helm-kubectl:latest
+  stage: deploy
+  script:
+    - helm version
+    - echo "Now you can use helm commands you want"
+#    - echo "$KUBECONFIG_B64" | base64 -d > $KUBECONFIG
+#    - helm upgrade --install myapp ./chart --namespace=my-namespace --create-namespace
