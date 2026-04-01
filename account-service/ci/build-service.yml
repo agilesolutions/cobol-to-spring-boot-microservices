@@ -1,8 +1,13 @@
+variables:
+  WORK_DIR: "account-service"
+
+
 build and package service:       # This job runs in the build stage, which runs first.
   #  image: gradle:8.7-jdk21
   stage: build
   script:
     - echo "Compiling, build and package..."
+    - cd $WORK_DIR
     - gradle bootJar
     - echo "Build."
   artifacts:
@@ -14,6 +19,7 @@ unit-tests:   # This job runs in the test stage.
   stage: test
   script:
     - echo "Running unit tests... "
+    - cd $WORK_DIR
     - gradle test
 
     #integration-tests:   # This job runs in the test stage.
@@ -37,6 +43,9 @@ docker-build:
   services:
     - docker:dind
   script:
+    - echo "Building Docker image..."
+    - cd $WORK_DIR
+    - echo "Using Dockerfile in $WORK_DIR/Dockerfile"
     - docker build -t $CI_REGISTRY_IMAGE/account-service:$CI_COMMIT_SHORT_SHA .
 #    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
 #    - docker login registry.gitlab.com
