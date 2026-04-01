@@ -5,7 +5,7 @@ spring:
   application:
     name: ${CREDIT_CARD_SERVICE_APPLICATION_NAME}
   config:
-    import: ${ACCOUNT_SERVICE_APPLICATION_NAME}
+    import: ${SPRING_CONFIG_IMPORT}
   # Spring Bus for RabbitMQ to refresh configuration across services
   rabbitmq:
     host: ${RABBITMQ_SERVICE_URL}
