@@ -4,6 +4,7 @@ variables:
 
 build and package service:       # This job runs in the build stage, which runs first.
   #  image: gradle:8.7-jdk21
+  image: gradle:9.1.0-jdk-25-and-25
   stage: build
   script:
     - echo "Compiling, build and package..."
