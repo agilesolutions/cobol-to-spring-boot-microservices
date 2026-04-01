@@ -36,8 +36,8 @@ spring:
   rabbitmq:
     host: ${RABBITMQ_SERVICE_URL}
     port: 5672
-    username: "guest"
-    password: "guest"
+    username: "admin"
+    password: "admin"
   mvc:
     apiversion:
         use-header: true
