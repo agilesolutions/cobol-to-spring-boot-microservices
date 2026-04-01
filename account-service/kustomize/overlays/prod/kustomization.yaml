@@ -12,8 +12,8 @@ patches:
     kind: Deployment
     name: account-service
 images:
-- name: Customize Toolbar…
-  newName: agilesolutions/Customize Toolbar…
+- name: account-service
+  newName: agilesolutions/account-service:1.0.0
 labels:
 - includeSelectors: true
   pairs:
