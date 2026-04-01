@@ -1,5 +1,6 @@
 server:
   port: 8091
+
 spring:
   application:
     name: ${CONFIGURATION_SERVICE_APPLICATION_NAME}
