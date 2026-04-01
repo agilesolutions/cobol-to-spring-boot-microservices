@@ -17,11 +17,6 @@ spring:
         #   timeout: 5
         #   clone-on-start: true
         #   force-pull: true
-  rabbitmq:
-    host: ${RABBITMQ_SERVICE_URL}
-    port: 5672
-    username: "admin"
-    password: "admin"
 
 eureka:
   instance:

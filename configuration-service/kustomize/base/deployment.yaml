@@ -26,11 +26,6 @@ spec:
                 configMapKeyRef:
                   name: services-configmap
                   key: CONFIGURATION_SERVICE_APPLICATION_NAME
-            - name: RABBITMQ_SERVICE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: services-configmap
-                  key: RABBITMQ_SERVICE_URL
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               valueFrom:
                 configMapKeyRef:

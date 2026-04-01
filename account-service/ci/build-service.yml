@@ -1,7 +1,7 @@
 variables:
   WORK_DIR: "account-service"
   SERVICE_NAME: "account-service"
-  KUSTOMIZE_DIR: "kustomize/overlays/prod"
+  KUSTOMIZE_DIR: "$WORK_DIR/kustomize/overlays/prod"
 
 
 build and package service:       # This job runs in the build stage, which runs first.

@@ -1,7 +1,7 @@
 variables:
   WORK_DIR: "product-service"
   SERVICE_NAME: "product-service"
-  KUSTOMIZE_DIR: "kustomize/overlays/prod"
+  KUSTOMIZE_DIR: "$WORK_DIR/kustomize/overlays/prod"
 
 build and package service:       # This job runs in the build stage, which runs first.
   image: gradle:9.1.0-jdk-25-and-25
