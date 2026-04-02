@@ -28,7 +28,7 @@ configurations {
 ext {
     commit = commit()
     branchName = branchName()
-    set('springCloudVersion', "2025.1.0")
+    set('springCloudVersion', "2025.1.1")
 }
 
 repositories {

@@ -5,6 +5,9 @@ spring:
   application:
     name: ${CONFIGURATION_SERVICE_APPLICATION_NAME}
   # Spring Bus for RabbitMQ to refresh configuration across services
+  profiles:
+    active: native
+    # active: git
   rabbitmq:
     host: ${RABBITMQ_SERVICE_URL}
     port: 5672
@@ -27,7 +30,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus, refresh, bus-refresh, bus-env, monitor
+        include: health,info,metrics,prometheus, refresh, busrefresh, bus-env, monitor
   health:
     readiness-state:
       enabled: true
