@@ -21,11 +21,11 @@ spec:
           ports:
             - containerPort: 8082
           env:
-            - name: ZOS_SERVICE_APPLICATION_NAME
+            - name: ZOS_CONNECT_SERVICE_APPLICATION_NAME
               valueFrom:
                 configMapKeyRef:
                   name: services-configmap
-                  key: ZOS_SERVICE_APPLICATION_NAME
+                  key: ZOS_CONNECT_SERVICE_APPLICATION_NAME
             - name: SPRING_CONFIG_IMPORT
               valueFrom:
                 configMapKeyRef:
